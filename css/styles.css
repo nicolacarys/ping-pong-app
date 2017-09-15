@@ -11,10 +11,22 @@ h2 {
 	font-size: 1.5em;
 }
 
+h3 {
+	font-size: 1.3em;
+}
+
 .main-content {
 	margin: 20px 0px;
 }
 
+.error-help-block {
+	color: red;
+}
+
 .game-pairing {
 	margin: 15px 0px;
+}
+
+.empty-field {
+	border: 1px solid red;
 }

@@ -23,18 +23,22 @@
 
 		<div class="sub-heading">
 			<h1> Ping Pong App </h1>
-			<h2> Number of players </h2>
+			<h2> How many players are in your tournament? </h2>
+			<h3> Enter an even number, divisible by 4 (for now)</h3>
 		</div>
 
 		<div class="main-content entry-section js__entry-section">
-			<input class="number-input js__entry-numbers" type="number" name="number-of-players" placeholder="0" />
-			<button class="button js__button-entry-numbers">Click Me!</button>
+			<input class="number-input js__entry-numbers" type="number" name="number-of-players" placeholder="even number" min="0" max="40"/>
+			<button class="button js__button-entry-numbers">Let’s go!</button>
+			<p class="error-help-block js__error-number-input"></p>
 		</div>
 
 		<div class="main-content details-section js__details-section">
 			<h2>Player Details</h2>
+			<h3>Enter the details of each player and click ‘Let’s Play!’ when completed.</h3>
 			<div class="player-details-container js__player-details-container"></div>
-				<button class="button-link js__button-players">Click Me!</button>
+				<p class="error-help-block js__error-text-input"></p>
+				<button class="button-link js__button-players">Let’s play!</button>
 		</div>
 
 		<div class="main-content tracker-section js__tracker-section">
