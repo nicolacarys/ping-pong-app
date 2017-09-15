@@ -1,0 +1,16 @@
+body {
+	padding: 30px;
+	font-size: 1em;
+}
+
+h1 {
+	font-size: 2em;
+}
+
+h2 {
+	font-size: 1.5em;
+}
+
+.main-content {
+	margin: 20px 0px;
+}
