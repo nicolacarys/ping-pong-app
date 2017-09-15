@@ -110,11 +110,14 @@ $($ => {
 
 		let inputs = detailsContainer.find(".js__inputs-container input");
 
+		// finding the values entered into each input
 		let empty = inputs.filter(function() {
       return this.value === "";
     });
 
+		// checking to see if the inputs have been filled
     if(empty.length) {
+    	// if at least one input is empty
     	console.log("input empty");
 
     	inputs.each(function() {
@@ -124,7 +127,10 @@ $($ => {
 			errorDetail.text("First name and surname are both required fields, please enter all player details.");
 
     } else {
+    	// no inputs are empty
     	console.log("inputs all filled");
+
+    	inputs.removeClass("empty-field");
 
     	detailsContainer.find(".js__inputs-container .js__forename-input").each(function () {
 				forenames.push($(this).val());
@@ -156,23 +162,36 @@ $($ => {
 	// 	TRACKER SECTION  - - - - - - operating on previous section btn click for initial state
 	// ****************************
 
-			
+			// playerDetails.map(({ fullName }, i) => console.log(i + " " + fullName));
 
-			// randomising the array
-			let playersRand = shuffle(playerDetails);
+			let fullNames = playerDetails.map(player => player.fullName);
+			let duplicate = fullNames.some((name, i) => fullNames.indexOf(name) != i);
 
-			// output as pairs
-			for (let i = 0; i < playersRand.length; i += 2) {
-		    let playerList = $("<ul />").addClass("game-pairing js__round-1");
-		    let playerItem1 = $("<li />").text(playersRand[i].dispName);
-				let vs = $("<p />").text("vs");
-				let playerItem2 = $("<li />").text(playersRand[i+1].dispName);
-				
-				trackerSection.append(playerList); 
-				playerList.append(playerItem1, vs, playerItem2);
-			};
+			if (duplicate === true) {
+				// duplicate full names found
+				console.log("duplicates found");
+
+			} else {
+				// no duplicates have been found
+
+				// randomising the array
+				let playersRand = shuffle(playerDetails);
+
+				// output as pairs
+				for (let i = 0; i < playersRand.length; i += 2) {
+			    let playerList = $("<ul />").addClass("game-pairing js__round-1");
+			    let playerItem1 = $("<li />").text(playersRand[i].dispName);
+					let vs = $("<p />").text("vs");
+					let playerItem2 = $("<li />").text(playersRand[i+1].dispName);
+					
+					trackerSection.append(playerList); 
+					playerList.append(playerItem1, vs, playerItem2);
+				};
+
+			}
+
     }
-
+    
 	});
 
 }); // document ready fn
