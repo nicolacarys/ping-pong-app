@@ -4,13 +4,14 @@ $($ => {
 	// debugging mode activate / deactivated
 	const debugMode = true;
 	let debug = (message) => debugMode ? console.log(message) : null;
-	// ## DEBUG ## // 
 
 	// initialising the state
 	let players,
 			forenames,
 			surnames,
 			playerDetails,
+			duplicates,
+			testPlayerArray,
 			valid;
 
 	let init = () => {
@@ -18,6 +19,8 @@ $($ => {
 		forenames = [];
 		surnames = [];
 		playerDetails = [];
+		duplicates = [];
+		testPlayerArray = [];
 		valid = false;
 
 		// onclick events initialised here
@@ -29,12 +32,11 @@ $($ => {
 		forenames = [];
 		surnames = [];
 		playerDetails = [];
+		duplicates = [];
+		testPlayerArray = [];
 		valid = false;
-
 		debug("values reset");
 	};
-
-// ****************************
 
 	const container = $(".js__wrapper");
 	const entrySection = $(".js__entry-section");
@@ -44,34 +46,28 @@ $($ => {
 	let errorEntry = $(".js__error-number-input")
 	let errorDetail = $(".js__error-text-input");
 
-// ******************************************************************************************************
+// ********************************************************************
 
 	init();
 
 	// is there a maximum number of players?
-	let numberInputValidChecks = (value) => {
-
+	let validateNumberInput = (value) => {
 		let isEven = (n) => n % 2 === 0;
 
 		// starting the conditional with guard statements
 		if (value === "") {
 			errorEntry.text("You can’t play a tournament without any players! Please enter an even number.");
-
 			debug("number validation: input field is empty");
 
 		} else if (value !== "") {
-
 			debug("number validation: SUCCESS - field isn't empty");
 
 			if (!isEven(value)) {
 				errorEntry.text("Your number needs to be even… no subs in this game!");
-
 				debug("number validation: input value is an odd number");
 
 			} else if (isEven(value)) {
-				
 				valid = true;
-
 				debug("number validation: SUCCESS - value is even");
 
 			} else {
@@ -80,12 +76,10 @@ $($ => {
 
 		} else {
 			debug("number validation: conditional has broken at value/no value stage");
-
 		};
 	};
 
-	let generateInputs = (value) => {
-		// log the number of players in players variable
+	let generateTextInputs = (value) => {
 		players = value;
 
 		// can this be simplified into functions to add inputs and labels?
@@ -102,87 +96,73 @@ $($ => {
 
 			detailsContainer.append(fieldContainer);
 			fieldContainer.append(labelFore, forename, labelSur, surname);
-
 		}
 	};
+
+	// ********************************
+	// BUTTON CLICK EVENT
+	// ********************************
 
 	// is event delegation more efficient here rather than specifying the button itself?
 	entrySection.on("click", "button", () => {
 		let inputVal = container.find($(".js__entry-numbers")).val();
-		
-		numberInputValidChecks(inputVal);
-
-		valid ? generateInputs(inputVal) : debug("number validation failed");
+		validateNumberInput(inputVal);
+		valid ? generateTextInputs(inputVal) : debug("number validation failed");
 
 		debug("valid status on entry button click: " + valid);
-
 		valid = false;
-
 		debug("valid reset: " + valid);
-
 	});
 
-// **************************************************************************************
+	// ********************************
+	// END CLICK EVENT
+	// ********************************
 
 	let findInputs = () => detailsContainer.find(".js__inputs-container input");
 		
 	let toggleInputStyling = (textInput) => {
 		textInput.each((i, input) => {
 			$(input).val() === "" ? $(input).addClass("empty-field") : $(input).removeClass("empty-field");
-		
 			debug("input styling toggled");
 		});
 	};
 
 	let textInputValidChecks = () => {
-
 		let emptyInputs = [];
 
 		let findEmptyInputs = () => {
 			findInputs().each((i, input) => {
 				$(input).val() === "" ? emptyInputs.push(i) : null;
-
 			});
+
+			return emptyInputs;
 		};
 
 		findEmptyInputs();
 
 		if (emptyInputs.length) {
-			
 			toggleInputStyling(findInputs());
 			errorDetail.text("First name and surname are both required fields, please enter all player details.");
-
-			debug("text validation: at least one field is empty");
-			debug("valid status when fields are empty: " + valid);
+			debug("text validation: at least one field is empty. Valid status: " + valid);
 
 		} else if (!emptyInputs.length) {
-				
     	toggleInputStyling(findInputs());
-
     	valid = true;
-
-    	debug("inputs all filled");
-			debug("valid status when fields are completed: " + valid);
+    	debug("inputs all filled. Valid status: " + valid);
 
 		} else {
 				debug("text validation: conditional has broken at finding empty fields stage");
-
 		};
 	};
 
-	let populateTempPlayerArr = () => {
-		let tempPlayerArray = [];
-
+	let populateTestPlayerArr = () => {
 		storePlayerNames();
-		pushPlayersToArray(players, tempPlayerArray);
-
-		return tempPlayerArray;
+		pushPlayersToArray(players, testPlayerArray);
+		return testPlayerArray;
 	};
 
-	let duplicates = [];
-
 	let findDuplicates = () => {
-		let fullNames = tempPlayerArray.map(player => player.fullName);
+		let fullNames = testPlayerArray.map(player => player.fullName);
 
 		let fullNameIndex = fullNames.map((name, index) => {
 			return {
@@ -192,76 +172,48 @@ $($ => {
 		});
 
 		duplicates = fullNameIndex.filter(item => item.index !== item.indexOf);
-		
-		debug("duplicates");
 		debug(duplicates);
+		return duplicates;
 	};
 
 	let duplicateValidation = () => {
-
-		populateTempPlayerArr();
+		populateTestPlayerArr();
 		findDuplicates();
 
 		// if there are no empty input fields
 		if (valid) {
 			if (duplicates.length) {
-
-				// can I map over the duplicates array, and then map over the details array and find the entry/ies with matching index values, push those into a new array, then each over the inputs and if the forename and surname match, highlight the box??
-
-				valid = false;
-
 				errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
-
+				valid = false;
 				debug("duplicate values found");
 
-			} else if (!duplicates.length) {
+				// an additional step here would be to highlight the duplicates in the input fields along with the help text to help the user identify what they need to correct
 
+			} else if (!duplicates.length) {
 				errorDetail.text("");
 				valid = true;
-
-				debug("no duplicate values found");
-				debug("valid status at duplicate validation: " + valid);
+				debug("no duplicate values found. Valid status: " + valid);
 
 			} else {
-
 				debug("duplicates conditional broken");
 			};
+
 		} else {
-		
 			debug("text input validation not passed, duplicate validation not run");
 		};
 	};
 
-	let printRandomPairs = () => {
-
-		let playersRand = shuffle(playerDetails);
-
-		// output as pairs
-		for (let i = 0; i < playersRand.length; i += 2) {
-	    let playerList = $("<ul />").addClass("game-pairing js__round-1");
-	    let playerItem1 = $("<li />").text(playersRand[i].dispName);
-			let vs = $("<p />").text("vs");
-			let playerItem2 = $("<li />").text(playersRand[i+1].dispName);
-			
-			container.find($(".js__tracker-section")).append(playerList); 
-			playerList.append(playerItem1, vs, playerItem2);
-		};
-	};
-
 	let storePlayerNames = () => {
-
 		let pushValToArray = (array, input) => array.push(input.val());
 
 		findInputs().each((i, input) => {
 
 			if ($(input).hasClass("js__forename-input")) {
 				pushValToArray(forenames, $(input));
-
 				debug("forename " + i + " added to array");
 
 			}	else if ($(input).hasClass("js__surname-input")) {
 				pushValToArray(surnames, $(input));
-
 				debug("surname " + i + " added to array");
 
 			} else {
@@ -271,7 +223,6 @@ $($ => {
 	};
 
 	let pushPlayersToArray = (numOfPlayers, array) => {
-		
 		let forenameFormatting = (forename) => forename.charAt(0).toUpperCase() + forename.slice(1);
 		let surnameFormatting = (surname) => surname.charAt(0).toUpperCase();
 
@@ -288,7 +239,6 @@ $($ => {
 		};
 
 		debug(array);
-
 		return array;
 	};
 
@@ -312,6 +262,24 @@ $($ => {
 	  return array;
 	};
 
+	let printRandomPairs = () => {
+		let playersRand = shuffle(playerDetails);
+
+		for (let i = 0; i < playersRand.length; i += 2) {
+	    let playerList = $("<ul />").addClass("game-pairing js__round-1");
+	    let playerItem1 = $("<li />").text(playersRand[i].dispName);
+			let vs = $("<p />").text("vs");
+			let playerItem2 = $("<li />").text(playersRand[i+1].dispName);
+			
+			container.find($(".js__tracker-section")).append(playerList); 
+			playerList.append(playerItem1, vs, playerItem2);
+		};
+	};
+
+	// ********************************
+	// BUTTON CLICK EVENT
+	// ********************************
+
 	detailsSection.on("click", "button", () => {
 		reset();
 		textInputValidChecks();
@@ -329,16 +297,17 @@ $($ => {
 				debug("valid reset: " + valid);
 
 			} else {
-				debug("text duplicate validation failed");
-				debug("valid status at failed duplicate validation: " + valid);
+				debug("text duplicate validation failed. Valid status: " + valid);
 			}
 
 		} else {
-			debug("text input validation failed");
-			debug("valid status at failed input validation: " + valid);
+			debug("text input validation failed. Valid status: " + valid);
 		}
-
 	});
+
+	// ********************************
+	// END CLICK EVENT
+	// ********************************
 
 }); // document ready fn
 
