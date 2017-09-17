@@ -1,32 +1,117 @@
+@font-face {
+  font-family: 'Roboto';
+  font-weight: normal;
+  src: url("../fonts/Roboto/Roboto-Regular") format("truetype"); }
 body {
-	padding: 30px;
-	font-size: 1em;
-}
+  background-color: #3f689b;
+  font-size: 1em;
+  text-align: center;
+  font-family: "Roboto", Arial, sans-serif;
+  color: #d9dadc; }
 
-h1 {
-	font-size: 2em;
-}
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #2c4a70;
+  border-bottom: 4px solid #d9dadc; }
 
-h2 {
-	font-size: 1.5em;
-}
+.heading {
+  margin: 15px 0;
+  line-height: 1.3em;
+  font-size: 1.6em; }
 
-h3 {
-	font-size: 1.3em;
-}
+.sub-heading {
+  margin: 15px 0;
+  font-size: 1.3em; }
+
+input {
+  background-color: #2c4a6f;
+  border: transparent;
+  border-radius: 6px;
+  font-size: 1em;
+  text-align: center; }
+  input:focus {
+    background-color: #d9dadc;
+    outline: none;
+    color: #2c4a6f; }
+
+.has-error {
+  border-color: #2c4a6f;
+  box-shadow: 0 0 25px #122748;
+  background-color: #d9dadc;
+  color: #2c4a6f; }
+
+.error-help-block.has-error {
+  position: relative;
+  width: 60%;
+  padding: 10px;
+  margin: 0 auto;
+  box-shadow: none;
+  background: #cc5c35;
+  line-height: 1.2em;
+  color: #d9dadc; }
+
+.error-help-block:after {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(204, 92, 53, 0);
+  border-bottom-color: #cc5c35;
+  border-width: 10px;
+  margin-left: -10px; }
+
+input, .button {
+  display: block;
+  margin: 20px auto; }
+
+.button {
+  padding: 8px;
+  background-color: #6dcff6;
+  border: 2px solid #d9dadc;
+  border-radius: 6px;
+  font-size: 1em;
+  color: #2c4a6f; }
+  .button:focus {
+    background-color: #2c4a6f;
+    border: 2px solid #6dcff6;
+    outline: none;
+    color: #d9dadc; }
 
 .main-content {
-	margin: 20px 0px;
-}
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px; }
 
-.error-help-block {
-	color: red;
-}
+.entry-section {
+  max-height: 300px;
+  box-sizing: border-box; }
+  .entry-section input {
+    margin-top: 20px;
+    width: 60px;
+    height: 30px; }
 
-.game-pairing {
-	margin: 15px 0px;
-}
+.details-section {
+  visibility: hidden; }
 
-.empty-field {
-	border: 1px solid red;
-}
+.tracker-section {
+  visibility: hidden;
+  border: 1px solid red; }
+
+.section-completed {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s; }
+
+.section-active {
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 2s linear 0s, opacity 300ms; }
+
+/*# sourceMappingURL=styles.css.map */

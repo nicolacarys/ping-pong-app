@@ -54,8 +54,14 @@ $($ => {
 	let validateNumberInput = (value) => {
 		let isEven = (n) => n % 2 === 0;
 
+		let addErrorClass = () => {
+			entrySection.find($("input")).addClass("has-error"); 
+			errorEntry.addClass("has-error");
+		};
+
 		// starting the conditional with guard statements
 		if (value === "") {
+			addErrorClass();
 			errorEntry.text("You can’t play a tournament without any players! Please enter an even number.");
 			debug("number validation: input field is empty");
 
@@ -63,6 +69,7 @@ $($ => {
 			debug("number validation: SUCCESS - field isn't empty");
 
 			if (!isEven(value)) {
+				addErrorClass();
 				errorEntry.text("Your number needs to be even… no subs in this game!");
 				debug("number validation: input value is an odd number");
 
@@ -107,11 +114,20 @@ $($ => {
 	entrySection.on("click", "button", () => {
 		let inputVal = container.find($(".js__entry-numbers")).val();
 		validateNumberInput(inputVal);
-		valid ? generateTextInputs(inputVal) : debug("number validation failed");
+		
+		if (valid) {
+			generateTextInputs(inputVal);
+			entrySection.addClass("section-completed");
+			detailsSection.addClass("section-active");
 
-		debug("valid status on entry button click: " + valid);
-		valid = false;
-		debug("valid reset: " + valid);
+			debug("valid status on entry button click: " + valid);
+			valid = false;
+			debug("valid reset: " + valid);
+
+		} else {
+			debug("number validation failed");
+		}
+
 	});
 
 	// ********************************
