@@ -14,16 +14,28 @@ body {
   justify-content: center;
   width: 100%;
   background-color: #2c4a70;
-  border-bottom: 4px solid #d9dadc; }
+  border-bottom: 6px solid #d9dadc; }
+
+.footer-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  background-color: #2c4a70;
+  border-top: 6px solid #d9dadc; }
+  .footer-container img {
+    height: 30px;
+    width: auto;
+    margin: 15px; }
 
 .heading {
-  margin: 15px 0;
+  margin: 15px;
   line-height: 1.3em;
   font-size: 1.6em; }
 
 .sub-heading {
   margin: 15px 0;
-  font-size: 1.3em; }
+  font-size: 1.3em;
+  line-height: 1.3em; }
 
 input {
   background-color: #2c4a6f;
@@ -89,29 +101,26 @@ input, .button {
   justify-content: center;
   padding: 30px; }
 
-.entry-section {
-  max-height: 300px;
-  box-sizing: border-box; }
-  .entry-section input {
-    margin-top: 20px;
-    width: 60px;
-    height: 30px; }
-
-.details-section {
-  visibility: hidden; }
-
-.tracker-section {
-  visibility: hidden;
-  border: 1px solid red; }
-
-.section-completed {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 1s; }
-
-.section-active {
-  visibility: visible;
-  opacity: 1;
-  transition: visibility 2s linear 0s, opacity 300ms; }
+  .main-content .entry-section {
+    max-height: 300px;
+    box-sizing: border-box; }
+    .main-content .entry-section input {
+      margin-top: 20px;
+      width: 60px;
+      height: 30px; }
+  .main-content .details-section {
+    visibility: hidden; }
+  .main-content .tracker-section {
+    visibility: hidden;
+    border: 1px solid red; }
+  .main-content .section-completed {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 1s; }
+  .main-content .section-active {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 2s linear 0s, opacity 300ms; }
+>>>>>>> styling
 
 /*# sourceMappingURL=styles.css.map */
