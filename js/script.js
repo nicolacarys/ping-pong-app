@@ -1,3 +1,9 @@
+/*
+	This code has been designed with efficiency and performance in mind. Special attention has been paid to the readability of the script and attempts have been made to make it easy (and quick) to understand.
+
+	The intention is for adding extra functionality to be easy due to the flexibility of the functions presented.
+*/
+
 $($ => {
 	// 275 lines at beginning of refactor
 
@@ -42,6 +48,7 @@ $($ => {
 	const entrySection = $(".js__entry-section");
 	const detailsSection = $(".js__details-section");
 	const detailsContainer = $(".js__player-details-container");
+	const trackerSection = $(".js__tracker-section");
 
 	let errorEntry = $(".js__error-number-input")
 	let errorDetail = $(".js__error-text-input");
@@ -56,7 +63,7 @@ $($ => {
 	// is there a maximum number of players?
 	let validateNumberInput = (value) => {
 		let isEven = (n) => n % 2 === 0;
-		let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
+		let hasErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
 
 		// starting the conditional with guard statements
 		if (value === "") {
@@ -69,19 +76,31 @@ $($ => {
 			removeErrorTextClass(errorEntry);
 			debug("number validation: SUCCESS - field isn't empty");
 
-			if (!isEven(value)) {
+			if (value < 4) {
 				hasErrorInputClass();
 				hasErrorTextClass(errorEntry);
-				errorEntry.text("Your number needs to be even… no subs in this game!");
-				debug("number validation: input value is an odd number");
+				errorEntry.text("You can't have a tournament with only " + value + " players! Enter a number over 4.");
+				debug("number validation: input value is under 4");
 
-			} else if (isEven(value)) {
-				removeErrorTextClass(errorEntry);
-				valid = true;
-				debug("number validation: SUCCESS - value is even");
+			} else if (value >= 4) {
+
+				if (!isEven(value)) {
+					hasErrorInputClass();
+					hasErrorTextClass(errorEntry);
+					errorEntry.text("Your number needs to be even… no subs in this game!");
+					debug("number validation: input value is an odd number");
+
+				} else if (isEven(value)) {
+					removeErrorTextClass(errorEntry);
+					valid = true;
+					debug("number validation: SUCCESS - value is even");
+
+				} else {
+					debug("number validation: conditional has broken at even/odd stage");
+				}
 
 			} else {
-				debug("number validation: conditional has broken at even/odd stage");
+				debug("number validation: conditional has broken at over/under 4 stage");
 			}
 
 		} else {
@@ -94,18 +113,19 @@ $($ => {
 
 		// can this be simplified into functions to add inputs and labels?
 		for (let i = 0; i < players; i++) {
-			let fieldContainer = $("<div />").addClass("inputs-container js__inputs-container").attr("data-id", i);
+			let fieldContainer = $("<div />").addClass("inputs-container js__inputs-container").attr("id", i);
 
-			let labelFore = $("<label />").attr("id", "player-forename").text("First Name");
+			// let labelFore = $("<label />").attr("id", "player-forename").text("First Name");
+			let playerNumber = $("<h2 />").addClass("player-number").text(i+1);
 
 			let forename = $("<input />").attr("id", "player-forename").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 30).addClass("input-text js__forename-input");
 
-			let labelSur = $("<label />").attr("id", "player-surname").text("Last Name");
+			// let labelSur = $("<label />").attr("id", "player-surname").text("Last Name");
 
 			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("input-text js__surname-input");
 
 			detailsContainer.append(fieldContainer);
-			fieldContainer.append(labelFore, forename, labelSur, surname);
+			fieldContainer.append(playerNumber, forename, surname);
 		}
 	};
 
@@ -120,6 +140,7 @@ $($ => {
 		
 		if (valid) {
 			generateTextInputs(inputVal);
+			container.find($(".js__header")).addClass("minimise-header");
 			entrySection.addClass("section-completed");
 			detailsSection.addClass("section-active");
 
@@ -147,10 +168,14 @@ $($ => {
 	};
 
 	let toggleErrorTextStyling = (textInput, errorBlockType) => {
+		let errors = [];
+
 		textInput.each((i, input) => {
-			$(input).hasClass("has-error") ? $(errorBlockType).addClass("has-error") : $(errorBlockType).removeClass("has-error");
-			debug("input styling toggled");
+			$(input).hasClass("has-error") ? errors.push(i) : null;
 		});
+
+		errors.length ? $(errorBlockType).addClass("has-error") : $(errorBlockType).removeClass("has-error");
+		debug("input styling toggled");
 	};
 
 	let textInputValidChecks = () => {
@@ -204,6 +229,39 @@ $($ => {
 		return duplicates;
 	};
 
+/*
+	HIGHLIGHTING THE INPUTS OF DUPLICATE ENTRIES
+	THIS CODE DOESN'T WORK (YET)
+
+	let highlightDuplicates = () => {
+
+		// get the indexOf values (these will be the position of the original names in playerDetails array)
+		let indexOfVals = duplicates.map(({ indexOf }) => indexOf);
+		debug(indexOfVals);
+
+		// get the indexes of items in duplicates array (these are the duplicate entries)
+		let indexVals = duplicates.map(({ index }) => index);
+		debug(indexVals);
+
+		// map over indexOfVals and for each value, compare that with the data id of the containers. If it matches - WOO!
+
+		indexOfVals.forEach(value => {
+			$("js__inputs-container").each((i, container) => { 
+				let dataId = $(container).attr("id");
+
+				debug("dataId: " + dataId);
+
+				// highlight the inputs in those containers
+				if (value === dataId) {
+					$(container).find("input").addClass("duplicate");
+				} else {
+					debug("could not find the indexOf duplicate container");
+				}
+			});
+		});
+	};
+*/
+
 	let duplicateValidation = () => {
 		populateTestPlayerArr();
 		findDuplicates();
@@ -211,6 +269,8 @@ $($ => {
 		// if there are no empty input fields
 		if (valid) {
 			if (duplicates.length) {
+				// highlightDuplicates();
+
 				hasErrorTextClass(errorDetail);
 				errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
 				valid = false;
@@ -293,15 +353,19 @@ $($ => {
 
 	let printRandomPairs = () => {
 		let playersRand = shuffle(playerDetails);
+		let n = 1;
 
 		for (let i = 0; i < playersRand.length; i += 2) {
-	    let playerList = $("<ul />").addClass("game-pairing js__round-1");
-	    let playerItem1 = $("<li />").text(playersRand[i].dispName);
-			let vs = $("<p />").text("vs");
-			let playerItem2 = $("<li />").text(playersRand[i+1].dispName);
+	    let pairContainer = $("<div />").addClass("game-pairing");
+	    let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
+	    let playerList = $("<ul />").addClass("player-list");
+	    let player1 = $("<li />").text(playersRand[i].dispName);
+			let player2 = $("<li />").text(playersRand[i+1].dispName);
 			
-			container.find($(".js__tracker-section")).append(playerList); 
-			playerList.append(playerItem1, vs, playerItem2);
+			trackerSection.append(pairContainer); 
+			pairContainer.append(gameNumber, playerList, player1, player2);
+
+			n++;
 		};
 	};
 
@@ -320,6 +384,9 @@ $($ => {
 				storePlayerNames();
 				pushPlayersToArray(players, playerDetails);
 				printRandomPairs();
+
+				detailsSection.removeClass("section-active").addClass("section-completed");
+				trackerSection.addClass("section-active");
 
 				debug("valid status on player button click: " + valid);
 				valid = false;

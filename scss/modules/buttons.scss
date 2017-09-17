@@ -1,0 +1,50 @@
+ 
+ /*
+ This is the basic stylesheet for buttons across the app.
+*/
+
+.button {
+	display: block;
+	padding: 8px;
+	margin: 20px auto;
+	background-color: $button-blue;
+	border: 2px solid $text-white;
+	border-radius: 6px;
+	font-size: 1em;
+	color: $input-blue;
+
+	&:focus {
+		background-color: $input-blue;
+		border: 2px solid $button-blue;
+		outline: none;
+		color: $text-white;
+
+	}
+}
+
+@media (max-width: 767px) and (min-width: 481px) {
+	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
+
+	.button {
+		font-size: 1.1em;
+	}
+
+
+}
+
+@media (max-width: 1029px) and (min-width: 768px) {
+	// This size will work on iPads, other tablets, and desktops.
+
+	.button {
+		font-size: 1.2em;
+	}
+
+}
+
+@media (max-width: 1029px) and (min-width: 768px) {
+	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
+	
+	.button {
+		font-size: 1.2em;
+	}
+}

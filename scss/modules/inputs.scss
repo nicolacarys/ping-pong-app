@@ -1,0 +1,110 @@
+
+/* 
+This is the basic stylesheet for inputs across the app. They can be over-written in styles.scss.
+*/
+
+input {
+	display: block;
+	height: 30px;
+	margin: 20px auto;
+	background-color: $input-blue;
+	border: transparent;
+	border-radius: 6px;
+	font-size: 1em;
+	text-align: center;
+
+	&:focus {
+		background-color: $text-white;
+		outline: none;
+		color: $input-blue;
+	}
+
+}
+
+.main-content {
+
+	.entry-section {
+
+		input {
+			margin-top: 20px;
+			width: 60px;
+		}
+	}
+}
+
+.has-error {
+	border-color: $input-blue;
+	box-shadow: 0 0 25px $darkblue;
+	background-color: $text-white;
+	color: $input-blue;
+
+}
+
+.error-help-block.has-error {
+	position: relative;
+	width: 60%;
+	padding: 10px;
+	margin: 10px auto;
+	box-shadow: none;
+	background: #cc5c35;
+	line-height: 1.2em;
+	font-size: 1em;
+	color: $text-white;
+
+}
+
+.error-help-block:after {
+	bottom: 100%;
+	left: 54%;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: rgba(204, 92, 53, 0);
+	border-bottom-color: $error;
+	border-width: 10px;
+	margin-left: -10px;
+
+}
+
+.duplicate {
+	background-color: yellow;
+}
+
+@media (max-width: 767px) and (min-width: 481px) {
+	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
+
+	input {
+		font-size: 1.1em;
+	}
+
+	.error-help-block.has-error {
+		font-size: 1.1em;
+	}
+}
+
+@media (max-width: 1029px) and (min-width: 768px) {
+	// This size will work on iPads, other tablets, and desktops.
+
+	input {
+		font-size: 1.2em;
+	}
+
+	.error-help-block.has-error {
+		font-size: 1.2em;
+	}
+}
+
+@media (max-width: 1029px) and (min-width: 768px) {
+	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
+	
+	input {
+		font-size: 1.2em;
+	}
+
+	.error-help-block.has-error {
+		font-size: 1.2em;
+	}
+}
