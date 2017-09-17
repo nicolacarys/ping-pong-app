@@ -50,30 +50,33 @@ $($ => {
 
 	init();
 
+	let hasErrorTextClass = (errorBlockType) => errorBlockType.addClass("has-error");
+	let removeErrorTextClass = (errorBlockType) => errorBlockType.removeClass("has-error");
+
 	// is there a maximum number of players?
 	let validateNumberInput = (value) => {
 		let isEven = (n) => n % 2 === 0;
-
-		let addErrorClass = () => {
-			entrySection.find($("input")).addClass("has-error"); 
-			errorEntry.addClass("has-error");
-		};
+		let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
 
 		// starting the conditional with guard statements
 		if (value === "") {
-			addErrorClass();
+			hasErrorInputClass();
+			hasErrorTextClass(errorEntry);
 			errorEntry.text("You can’t play a tournament without any players! Please enter an even number.");
 			debug("number validation: input field is empty");
 
 		} else if (value !== "") {
+			removeErrorTextClass(errorEntry);
 			debug("number validation: SUCCESS - field isn't empty");
 
 			if (!isEven(value)) {
-				addErrorClass();
+				hasErrorInputClass();
+				hasErrorTextClass(errorEntry);
 				errorEntry.text("Your number needs to be even… no subs in this game!");
 				debug("number validation: input value is an odd number");
 
 			} else if (isEven(value)) {
+				removeErrorTextClass(errorEntry);
 				valid = true;
 				debug("number validation: SUCCESS - value is even");
 
@@ -138,7 +141,14 @@ $($ => {
 		
 	let toggleInputStyling = (textInput) => {
 		textInput.each((i, input) => {
-			$(input).val() === "" ? $(input).addClass("empty-field") : $(input).removeClass("empty-field");
+			$(input).val() === "" ? $(input).addClass("has-error") : $(input).removeClass("has-error");
+			debug("input styling toggled");
+		});
+	};
+
+	let toggleErrorTextStyling = (textInput, errorBlockType) => {
+		textInput.each((i, input) => {
+			$(input).hasClass("has-error") ? $(errorBlockType).addClass("has-error") : $(errorBlockType).removeClass("has-error");
 			debug("input styling toggled");
 		});
 	};
@@ -158,11 +168,13 @@ $($ => {
 
 		if (emptyInputs.length) {
 			toggleInputStyling(findInputs());
+			toggleErrorTextStyling(findInputs(), errorDetail);
 			errorDetail.text("First name and surname are both required fields, please enter all player details.");
 			debug("text validation: at least one field is empty. Valid status: " + valid);
 
 		} else if (!emptyInputs.length) {
     	toggleInputStyling(findInputs());
+			toggleErrorTextStyling(findInputs(), errorDetail);
     	valid = true;
     	debug("inputs all filled. Valid status: " + valid);
 
@@ -199,6 +211,7 @@ $($ => {
 		// if there are no empty input fields
 		if (valid) {
 			if (duplicates.length) {
+				hasErrorTextClass(errorDetail);
 				errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
 				valid = false;
 				debug("duplicate values found");
