@@ -4,123 +4,140 @@
 	The intention is for adding extra functionality to be easy due to the flexibility of the functions presented.
 */
 
+// An event ready function wraps the code
 $($ => {
-	// 275 lines at beginning of refactor
 
-	// debugging mode activate / deactivated
+	/* Debugging mode --> set the value to TRUE for debugging console messages, or FALSE if not testing.
+	This was designed to be a development aid in identifying from where problems originated. */
 	const debugMode = true;
-	let debug = (message) => debugMode ? console.log(message) : null;
+				debug = (message) => debugMode ? console.log(message) : null;
 
-	// initialising the state
-	let players,
-			forenames,
-			surnames,
-			playerDetails,
-			duplicates,
-			testPlayerArray,
-			valid;
+	// Setting up the global variables
+	const container = $(".js__wrapper"),
+				entrySection = $(".js__entry-section"),
+				detailsSection = $(".js__details-section"),
+				detailsContainer = $(".js__player-details-container"),
+				trackerSection = $(".js__tracker-section");
 
-	let init = () => {
-		players = "";
-		forenames = [];
-		surnames = [];
-		playerDetails = [];
-		duplicates = [];
-		testPlayerArray = [];
-		valid = false;
+	let errorEntry = $(".js__error-number-input"),
+			errorDetail = $(".js__error-text-input");
 
-		// onclick events initialised here
-
-		debug("state initialised");
+	let state = {
+					numberOfPlayers: '',
+					forenames: [],
+					surnames: [],
+					playerDetails: [],
+					tempPlayerDetailsArray: [],
+					valid: false,
 	};
 
+	// This function sets the initial state of the app and is called at the start of the code
+	// let init = () => {
+	// 	numberOfPlayers = "";
+	// 	forenames = [];
+	// 	surnames = [];
+	// 	playerDetails = [];
+	// 	tempPlayerDetailsArray = [];
+	// 	valid = false;
+	// 	debug("state initialised");
+	// };
+
+	/* This function is used to reset variables affected by button clicks. 
+	It is included to allow functions to run with clean states and not accumulate redundant data. */
 	let reset = () => {
-		forenames = [];
-		surnames = [];
-		playerDetails = [];
-		duplicates = [];
-		testPlayerArray = [];
-		valid = false;
+		state.forenames = [];
+		state.surnames = [];
+		state.playerDetails = [];
+		state.tempPlayerDetailsArray = [];
+		state.valid = false;
 		debug("values reset");
 	};
 
-	const container = $(".js__wrapper");
-	const entrySection = $(".js__entry-section");
-	const detailsSection = $(".js__details-section");
-	const detailsContainer = $(".js__player-details-container");
-	const trackerSection = $(".js__tracker-section");
-
-	let errorEntry = $(".js__error-number-input")
-	let errorDetail = $(".js__error-text-input");
-
 // ********************************************************************
+	
+	// Initialising the app state
+	// init();
 
-	init();
-
-	let hasErrorTextClass = (errorBlockType) => errorBlockType.addClass("has-error");
+	/* These functions are used to add error classes to text blocks when error messages need to be shown.
+	These functions are called throughout the script, so are sitting at a global level. */
+	let addErrorTextClass = (errorBlockType) => errorBlockType.addClass("has-error");
 	let removeErrorTextClass = (errorBlockType) => errorBlockType.removeClass("has-error");
 
-	// is there a maximum number of players?
-	let validateNumberInput = (value) => {
-		let isEven = (n) => n % 2 === 0;
-		let hasErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
 
-		// starting the conditional with guard statements
-		if (value === "") {
-			hasErrorInputClass();
-			hasErrorTextClass(errorEntry);
+	// Validation for the number of players inputted, called on a button click event
+	let validateNumberInput = (numberEntered) => {
+		
+		/* These functions are only used at a local level.
+		They check the value entered for even / odd, and toggle error classes for the number input and error text. */
+		let isEven = (n) => n % 2 === 0;
+		
+		let addErrorClasses = (errorBlockType) => {
+			let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
+			addErrorTextClass(errorBlockType);
+		}
+
+		let removeErrorClasses = (errorBlockType) => {
+			let removeErrorInputClass = () => entrySection.find($("input")).removeClass("has-error");
+			removeErrorTextClass(errorBlockType);
+		}
+
+		/* Validation checks to run on the number input.
+
+		--> Conditional statements throughout have been coded defensively, guard statements are established before actions are outlined. This has been done for readability, so that the validation steps can be more easily identified. */
+		if (numberEntered === "") {
+			addErrorClasses(errorEntry);
 			errorEntry.text("You can’t play a tournament without any players! Please enter an even number.");
 			debug("number validation: input field is empty");
 
-		} else if (value !== "") {
-			removeErrorTextClass(errorEntry);
+		} else {
+			removeErrorClasses(errorEntry);
 			debug("number validation: SUCCESS - field isn't empty");
 
-			if (value < 4) {
-				hasErrorInputClass();
-				hasErrorTextClass(errorEntry);
-				errorEntry.text("You can't have a tournament with only " + value + " players! Enter a number over 4.");
+			if (numberEntered < 4) {
+				addErrorClasses(errorEntry);
+				errorEntry.text(`You can't have a tournament with only ${numberEntered} players! Enter a number between 4 and 100.`);
 				debug("number validation: input value is under 4");
 
-			} else if (value >= 4) {
+			} else {
+				removeErrorClasses(errorEntry);
+				debug("number validation: SUCCESS - value is more than 4");
 
-				if (!isEven(value)) {
-					hasErrorInputClass();
-					hasErrorTextClass(errorEntry);
+				if (numberEntered > 100) {
+					addErrorClasses(errorEntry);
+					errorEntry.text("Please enter a number under, or equal to, 100.");
+					debug("number validation: input value is over 100");
+				
+				} else {
+					removeErrorClasses(errorEntry);
+					debug("number validation: SUCCESS - value is less than 100");
+
+					if (!isEven(numberEntered)) {
+					addErrorClasses(errorEntry);
 					errorEntry.text("Your number needs to be even… no subs in this game!");
 					debug("number validation: input value is an odd number");
 
-				} else if (isEven(value)) {
-					removeErrorTextClass(errorEntry);
-					valid = true;
-					debug("number validation: SUCCESS - value is even");
+					} else {
+						removeErrorClasses(errorEntry);
+						state.valid = true;
+						debug("number validation: SUCCESS - value is even");
 
-				} else {
-					debug("number validation: conditional has broken at even/odd stage");
+						return state.numberOfPlayers = numberEntered;
+					}
 				}
-
-			} else {
-				debug("number validation: conditional has broken at over/under 4 stage");
 			}
-
-		} else {
-			debug("number validation: conditional has broken at value/no value stage");
-		};
+		}
 	};
 
-	let generateTextInputs = (value) => {
-		players = value;
+	// Taking the validated number and using it to insert a corresponding number of inputs into the DOM.
+	let generateTextInputs = (numberInputValue) => {
 
-		// can this be simplified into functions to add inputs and labels?
-		for (let i = 0; i < players; i++) {
+		// Looping over the number inputted to establish how many inputs are needed
+		for (let i = 0; i < numberInputValue; i++) {
 			let fieldContainer = $("<div />").addClass("inputs-container js__inputs-container").attr("id", i);
 
-			// let labelFore = $("<label />").attr("id", "player-forename").text("First Name");
 			let playerNumber = $("<h2 />").addClass("player-number").text(i+1);
 
 			let forename = $("<input />").attr("id", "player-forename").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 30).addClass("input-text js__forename-input");
-
-			// let labelSur = $("<label />").attr("id", "player-surname").text("Last Name");
 
 			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("input-text js__surname-input");
 
@@ -129,93 +146,104 @@ $($ => {
 		}
 	};
 
+	/* These functions toggle section styling based on their active status. 
+	They are sitting at a global level as they are used throughout the script. */
+	let markSectionActive = (sectionName) => sectionName.addClass("section-active");
+	let removeSectionActiveClass = (sectionName) => sectionName.removeClass("section-active");
+	let markSectionCompleted = (sectionName) => sectionName.addClass("section-completed");
+
+
 	// ********************************
 	// BUTTON CLICK EVENT
 	// ********************************
 
-	// is event delegation more efficient here rather than specifying the button itself?
+	//The event triggering the validation checks / input generation for the first page.
 	entrySection.on("click", "button", () => {
-		let inputVal = container.find($(".js__entry-numbers")).val();
-		validateNumberInput(inputVal);
+		let inputValue = container.find($(".js__entry-numbers")).val();
+		validateNumberInput(inputValue);
 		
-		if (valid) {
-			generateTextInputs(inputVal);
-			container.find($(".js__header")).addClass("minimise-header");
-			entrySection.addClass("section-completed");
-			detailsSection.addClass("section-active");
+		if (state.valid) {
+			generateTextInputs(inputValue);
+			markSectionCompleted(entrySection);
+			markSectionActive(detailsSection);
 
-			debug("valid status on entry button click: " + valid);
-			valid = false;
-			debug("valid reset: " + valid);
+			// This adds a styling class to the header to minimise it after the first page
+			container.find($(".js__header")).addClass("minimise-header");
+
+			debug(`valid status on entry button click: ${state.valid}`);
+			state.valid = false;
+			debug(`valid reset: ${state.valid}`);
 
 		} else {
 			debug("number validation failed");
 		}
-
 	});
 
 	// ********************************
 	// END CLICK EVENT
 	// ********************************
 
+
+	/* Finding the individual text inputs within each input container.
+	This approach has been included to allow the inputs to be looped over in rows, rather than columns.	*/
 	let findInputs = () => detailsContainer.find(".js__inputs-container input");
-		
-	let toggleInputStyling = (textInput) => {
+	
+
+	// *** EMPTY TEXT INPUT VALIDATION FUNCTIONS ***
+
+
+	// Toggling the error status of text inputs, based on whether they have a value entered or not.	
+	let toggleErrorStatus = (textInput, errorBlockType) => {
 		textInput.each((i, input) => {
 			$(input).val() === "" ? $(input).addClass("has-error") : $(input).removeClass("has-error");
 			debug("input styling toggled");
 		});
-	};
 
-	let toggleErrorTextStyling = (textInput, errorBlockType) => {
-		let errors = [];
+		/* This function toggles the error status of the error text block. 
+		Its status depends on the status of the text inputs, and runs at the same time, so it is sitting inside that function. */
+		let toggleHelpBlockErrorStatus = (textInput, errorBlockType) => {
+			let numberOfErrors = [];
 
-		textInput.each((i, input) => {
-			$(input).hasClass("has-error") ? errors.push(i) : null;
-		});
+			/* Looping over each of the text inputs to identify is the errors class is present. 
+			Pushing error instances to an array avoids problems with the final input being the last to pass through the each() loop, thus setting the status for all inputs. */
+			textInput.each((i, input) => $(input).hasClass("has-error") ? numberOfErrors.push(i) : null);
 
-		errors.length ? $(errorBlockType).addClass("has-error") : $(errorBlockType).removeClass("has-error");
-		debug("input styling toggled");
-	};
-
-	let textInputValidChecks = () => {
-		let emptyInputs = [];
-
-		let findEmptyInputs = () => {
-			findInputs().each((i, input) => {
-				$(input).val() === "" ? emptyInputs.push(i) : null;
-			});
-
-			return emptyInputs;
+			numberOfErrors.length ? $(errorBlockType).addClass("has-error") : $(errorBlockType).removeClass("has-error");
+			debug("input styling toggled");
 		};
 
-		findEmptyInputs();
+		toggleHelpBlockErrorStatus(textInput, errorBlockType);
+	};
 
-		if (emptyInputs.length) {
-			toggleInputStyling(findInputs());
-			toggleErrorTextStyling(findInputs(), errorDetail);
+	// Finding the empty text inputs and pushing them to an array for use in the validateTextInput function.
+	let findEmptyInputs = (textInputs) => {
+		let emptyInputs = [];
+		textInputs.each((i, textInput) => $(textInput).val() === "" ? emptyInputs.push(i) : null);
+		return emptyInputs;
+	};
+
+
+	// Calling the validation functions for adding error classes to empty fields.
+	let validateForEmptyInputs = () => {
+
+		if (findEmptyInputs(findInputs()).length) {
+			toggleErrorStatus(findInputs(), errorDetail);
 			errorDetail.text("First name and surname are both required fields, please enter all player details.");
-			debug("text validation: at least one field is empty. Valid status: " + valid);
-
-		} else if (!emptyInputs.length) {
-    	toggleInputStyling(findInputs());
-			toggleErrorTextStyling(findInputs(), errorDetail);
-    	valid = true;
-    	debug("inputs all filled. Valid status: " + valid);
+			debug(`text validation: at least one field is empty. Valid status: ${state.valid}`);
 
 		} else {
-				debug("text validation: conditional has broken at finding empty fields stage");
-		};
+			toggleErrorStatus(findInputs(), errorDetail);
+			state.valid = true;
+			debug(`inputs all filled. Valid status: ${state.valid}`);
+		} 
 	};
 
-	let populateTestPlayerArr = () => {
-		storePlayerNames();
-		pushPlayersToArray(players, testPlayerArray);
-		return testPlayerArray;
-	};
+	// *** DUPLICATE VALIDATION FUNCTIONS ***
 
-	let findDuplicates = () => {
-		let fullNames = testPlayerArray.map(player => player.fullName);
+
+	// Searching an array for duplicate entries using indexOf()
+	let findDuplicates = (players) => {
+		let fullNames = players.map(player => player.fullName);
 
 		let fullNameIndex = fullNames.map((name, index) => {
 			return {
@@ -224,7 +252,7 @@ $($ => {
 			}
 		});
 
-		duplicates = fullNameIndex.filter(item => item.index !== item.indexOf);
+		let duplicates = fullNameIndex.filter(item => item.index !== item.indexOf);
 		debug(duplicates);
 		return duplicates;
 	};
@@ -235,7 +263,7 @@ $($ => {
 
 	let highlightDuplicates = () => {
 
-		// get the indexOf values (these will be the position of the original names in playerDetails array)
+		// get the indexOf values (these will be the position of the original names in state.playerDetails array)
 		let indexOfVals = duplicates.map(({ indexOf }) => indexOf);
 		debug(indexOfVals);
 
@@ -262,48 +290,51 @@ $($ => {
 	};
 */
 
-	let duplicateValidation = () => {
-		populateTestPlayerArr();
-		findDuplicates();
-
-		// if there are no empty input fields
-		if (valid) {
-			if (duplicates.length) {
-				// highlightDuplicates();
-
-				hasErrorTextClass(errorDetail);
-				errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
-				valid = false;
-				debug("duplicate values found");
-
-				// an additional step here would be to highlight the duplicates in the input fields along with the help text to help the user identify what they need to correct
-
-			} else if (!duplicates.length) {
-				errorDetail.text("");
-				valid = true;
-				debug("no duplicate values found. Valid status: " + valid);
-
-			} else {
-				debug("duplicates conditional broken");
-			};
-
-		} else {
-			debug("text input validation not passed, duplicate validation not run");
-		};
+	//Creating a temporary playerDetails array to use in validation checks.
+	let populateTempPlayerDetailsArr = (forename, surname, numberOfEntries) => {
+		storePlayerNames(forename, surname);
+		pushPlayersToArray(numberOfEntries, state.tempPlayerDetailsArray);
+		return state.tempPlayerDetailsArray;
 	};
 
-	let storePlayerNames = () => {
-		let pushValToArray = (array, input) => array.push(input.val());
+	// Main duplicate validation, calling the functions above.
+	let duplicateValidation = () => {
+		populateTempPlayerDetailsArr(state.forenames, state.surnames, state.numberOfPlayers);
+		let duplicates = findDuplicates(state.tempPlayerDetailsArray);
 
-		findInputs().each((i, input) => {
+		// If there are items in the duplicates array, an error message is returned.
+		if (duplicates.length) {
+			// highlightDuplicates();
 
-			if ($(input).hasClass("js__forename-input")) {
-				pushValToArray(forenames, $(input));
-				debug("forename " + i + " added to array");
+			addErrorTextClass(errorDetail);
+			errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
+			state.valid = false;
+			debug("duplicate values found");
 
-			}	else if ($(input).hasClass("js__surname-input")) {
-				pushValToArray(surnames, $(input));
-				debug("surname " + i + " added to array");
+		// If the duplicates array is empty, the app accepts the entries and ends the duplication validation process.
+		} else {
+			errorDetail.text("");
+			state.valid = true;
+			debug("no duplicate values found. Valid status: " + state.valid);
+		}
+	};
+
+
+	// *** STORING PLAYER DETAILS FUNCTIONS ***
+
+
+	// Capturing the first and last names inputted into the text inputs and storing them in separate arrays.
+	let storePlayerNames = (forename, surname) => {
+		let pushSeparateNamesToArray = (nameType, nameTextInput) => nameType.push(nameTextInput.val());
+
+		findInputs().each((i, textInput) => {
+			if ($(textInput).hasClass("js__forename-input")) {
+				pushSeparateNamesToArray(forename, $(textInput));
+				debug(`forename ${i} added to array`);
+
+			}	else if ($(textInput).hasClass("js__surname-input")) {
+				pushSeparateNamesToArray(surname, $(textInput));
+				debug(`surname ${i} added to array`);
 
 			} else {
 				debug("no classes found on inputs");
@@ -311,93 +342,100 @@ $($ => {
 		});
 	};
 
-	let pushPlayersToArray = (numOfPlayers, array) => {
+	// Pushing the player details to their final array, using the forename / surname arrays and concatenating to make a fullName property.
+	let pushPlayersToArray = (numberOfCompetitors, players) => {
 		let forenameFormatting = (forename) => forename.charAt(0).toUpperCase() + forename.slice(1);
 		let surnameFormatting = (surname) => surname.charAt(0).toUpperCase();
 
-		for (let i = 0; i < numOfPlayers; i++) {
+		// The fullName and (particulary) dispName properties have been included for UX purposes. 
+		for (let i = 0; i < numberOfCompetitors; i++) {
 			let player = {
 				id: i,
-				forename: forenames[i],
-				surname: surnames[i],
-				fullName: forenames[i] + " " + surnames[i],
-				dispName: forenameFormatting(forenames[i]) + " " + surnameFormatting(surnames[i]),
+				forename: state.forenames[i],
+				surname: state.surnames[i],
+				fullName: state.forenames[i] + " " + state.surnames[i],
+				dispName: forenameFormatting(state.forenames[i]) + " " + surnameFormatting(state.surnames[i]),
 			};
 
-			array.push(player);
-		};
+			players.push(player);
+		}
 
-		debug(array);
-		return array;
+		debug(players);
+		return players;
 	};
 
-	// the Fisher-Yates (aka Knuth) Shuffle
-	let shuffle = (array) => {
-	  let currentIndex = array.length, temporaryValue, randomIndex;
+	// The Fisher-Yates (aka Knuth) Shuffle function, used to randomise the playerDetails array
+	let shuffleArray = (players) => {
+		let currentIndex = players.length, temporaryValue, randomIndex;
 
-	  // While there remain elements to shuffle...
-	  while (0 !== currentIndex) {
+		// While there remain elements to shuffle...
+		while (0 !== currentIndex) {
 
-	    // Pick a remaining element...
-	    randomIndex = Math.floor(Math.random() * currentIndex);
-	    currentIndex -= 1;
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
 
-	    // And swap it with the current element.
-	    temporaryValue = array[currentIndex];
-	    array[currentIndex] = array[randomIndex];
-	    array[randomIndex] = temporaryValue;
-	  }
+		// And swap it with the current element.
+		temporaryValue = players[currentIndex];
+		players[currentIndex] = players[randomIndex];
+		players[randomIndex] = temporaryValue;
+		}
 
-	  return array;
+		return players;
 	};
 
-	let printRandomPairs = () => {
-		let playersRand = shuffle(playerDetails);
+	// Outputting the randomised array as pairs, and inserting them into the DOM as <li>s.
+	let printRandomPairs = (players) => {
+		let playersRand = shuffleArray(players);
 		let n = 1;
 
 		for (let i = 0; i < playersRand.length; i += 2) {
-	    let pairContainer = $("<div />").addClass("game-pairing");
-	    let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
-	    let playerList = $("<ul />").addClass("player-list");
-	    let player1 = $("<li />").text(playersRand[i].dispName);
+			let pairContainer = $("<div />").addClass("game-pairing");
+			let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
+			let playerList = $("<ul />").addClass("player-list");
+			let player1 = $("<li />").text(playersRand[i].dispName);
 			let player2 = $("<li />").text(playersRand[i+1].dispName);
 			
 			trackerSection.append(pairContainer); 
 			pairContainer.append(gameNumber, playerList, player1, player2);
 
 			n++;
-		};
+		}
 	};
 
 	// ********************************
 	// BUTTON CLICK EVENT
 	// ********************************
 
+	//The event triggering the text input validation / random pairings for the second and final pages.
 	detailsSection.on("click", "button", () => {
+		
+		// Resetting the state values on each button click so multiple entries aren't created.	
 		reset();
-		textInputValidChecks();
+		validateForEmptyInputs();
 
-		if (valid) {
+		if (!state.valid) {
+			debug(`text input validation failed at first stage. Valid status: ${state.valid}`);
+		
+		} else {
 			duplicateValidation();
 
-			if (valid) {
-				storePlayerNames();
-				pushPlayersToArray(players, playerDetails);
-				printRandomPairs();
-
-				detailsSection.removeClass("section-active").addClass("section-completed");
-				trackerSection.addClass("section-active");
-
-				debug("valid status on player button click: " + valid);
-				valid = false;
-				debug("valid reset: " + valid);
-
+			if (!state.valid) {
+				debug(`text duplicate validation failed at second stage. Valid status: ${state.valid}`);
+			
 			} else {
-				debug("text duplicate validation failed. Valid status: " + valid);
-			}
+				storePlayerNames(state.forenames, state.surnames);
+				pushPlayersToArray(state.numberOfPlayers, state.playerDetails);
+				printRandomPairs(state.playerDetails);
 
-		} else {
-			debug("text input validation failed. Valid status: " + valid);
+				removeSectionActiveClass(detailsSection);
+				markSectionCompleted(detailsSection);
+				markSectionActive(trackerSection);
+
+				debug(`valid status on player button click: ${state.valid}`);
+				state.valid = false;
+				debug(`valid reset: ${state.valid}`);
+			}
 		}
 	});
 
@@ -405,5 +443,4 @@ $($ => {
 	// END CLICK EVENT
 	// ********************************
 
-}); // document ready fn
-
+}); // document ready fn closing tag
