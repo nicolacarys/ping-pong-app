@@ -9,7 +9,15 @@
 @import "modules/buttons.scss";
 @import "modules/inputs.scss";
 
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
 body {
+	position: relative;
+	margin: 0;
+	min-height: 100%;
 	background-color: $background-blue;
 	font-size: 1em;
 	text-align: center;
@@ -18,11 +26,15 @@ body {
 
 }
 
+
+
+.wrapper {
+
+}
+
 // HEADER STYLES
 
 .header {
-	// border: 1px solid red;
-
 	width: 100%;
 	max-height: 140px;
 	background-color: $background-darkblue;
@@ -34,7 +46,6 @@ body {
 		height: auto;
 		margin: 15px;
 	}
-
 }
 
 .minimise-header {
@@ -73,34 +84,25 @@ body {
 	padding: 30px;
 
 	.entry-section {
-	// border: 1px solid red;
 	max-height: 300px;
 	box-sizing: border-box;
-
 	}
 
 	.details-section {
 		visibility: hidden;
 		max-height: 800px;
-		// border: 1px solid red;
-
-		.inputs-container {
-			// display: flex;
-			// flex-direction: column;			
-		}
+		overflow: auto;
 
 		.player-number, input {
-			// display: block;
 			width: 80%;
 			margin: 8px auto;
 		}
-
 	}
 
 	.tracker-section {
 		visibility: hidden;
 		max-height: 800px;
-		// border: 1px solid red;
+		overflow: auto;
 
 		.game-pairing {
 			padding: 15px;
@@ -121,7 +123,6 @@ body {
 				font-size: 1.2em;
 			}
 		}
-
 	}
 
 	.section-completed {
@@ -130,7 +131,6 @@ body {
 		opacity: 0;
 		transition: opacity 300ms;
 		transition: max-height 1s;
-
 	}
 
 	.section-active {
@@ -144,7 +144,11 @@ body {
 // FOOTER STYLES
 
 .footer-container {
+	position: absolute;
+	bottom: 0;
+	left: 0;
 	width: 100%;
+	height: 80px;
 	background-color: $background-darkblue;
 	border-top: 6px solid $text-white;
 

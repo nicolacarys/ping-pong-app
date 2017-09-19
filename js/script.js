@@ -58,6 +58,7 @@ $($ => {
 	// Initialising the app state
 	// init();
 
+
 	/* These functions are used to add error classes to text blocks when error messages need to be shown.
 	These functions are called throughout the script, so are sitting at a global level. */
 	let addErrorTextClass = (errorBlockType) => errorBlockType.addClass("has-error");
@@ -141,7 +142,7 @@ $($ => {
 
 			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("input-text js__surname-input");
 
-			detailsContainer.append(fieldContainer);
+			errorDetail.before(fieldContainer);
 			fieldContainer.append(playerNumber, forename, surname);
 		}
 	};
@@ -154,11 +155,13 @@ $($ => {
 
 
 	// ********************************
-	// BUTTON CLICK EVENT
+	// LET'S GO BUTTON CLICK EVENT
 	// ********************************
 
 	//The event triggering the validation checks / input generation for the first page.
-	entrySection.on("click", "button", () => {
+	entrySection.on("click", "button", (e) => {
+		e.preventDefault();
+
 		let inputValue = container.find($(".js__entry-numbers")).val();
 		validateNumberInput(inputValue);
 		
@@ -238,6 +241,7 @@ $($ => {
 		} 
 	};
 
+
 	// *** DUPLICATE VALIDATION FUNCTIONS ***
 
 
@@ -298,7 +302,7 @@ $($ => {
 	};
 
 	// Main duplicate validation, calling the functions above.
-	let duplicateValidation = () => {
+	let validateForDuplicates = () => {
 		populateTempPlayerDetailsArr(state.forenames, state.surnames, state.numberOfPlayers);
 		let duplicates = findDuplicates(state.tempPlayerDetailsArray);
 
@@ -345,7 +349,7 @@ $($ => {
 	// Pushing the player details to their final array, using the forename / surname arrays and concatenating to make a fullName property.
 	let pushPlayersToArray = (numberOfCompetitors, players) => {
 		let forenameFormatting = (forename) => forename.charAt(0).toUpperCase() + forename.slice(1);
-		let surnameFormatting = (surname) => surname.charAt(0).toUpperCase();
+		let surnameFormatting = (surname) => surname.charAt(0).toUpperCase() + surname.slice(1);
 
 		// The fullName and (particulary) dispName properties have been included for UX purposes. 
 		for (let i = 0; i < numberOfCompetitors; i++) {
@@ -353,8 +357,7 @@ $($ => {
 				id: i,
 				forename: state.forenames[i],
 				surname: state.surnames[i],
-				fullName: state.forenames[i] + " " + state.surnames[i],
-				dispName: forenameFormatting(state.forenames[i]) + " " + surnameFormatting(state.surnames[i]),
+				fullName: forenameFormatting(state.forenames[i]) + " " + surnameFormatting(state.surnames[i]),
 			};
 
 			players.push(player);
@@ -393,8 +396,8 @@ $($ => {
 			let pairContainer = $("<div />").addClass("game-pairing");
 			let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
 			let playerList = $("<ul />").addClass("player-list");
-			let player1 = $("<li />").text(playersRand[i].dispName);
-			let player2 = $("<li />").text(playersRand[i+1].dispName);
+			let player1 = $("<li />").text(playersRand[i].fullName);
+			let player2 = $("<li />").text(playersRand[i+1].fullName);
 			
 			trackerSection.append(pairContainer); 
 			pairContainer.append(gameNumber, playerList, player1, player2);
@@ -403,13 +406,15 @@ $($ => {
 		}
 	};
 
+
 	// ********************************
-	// BUTTON CLICK EVENT
+	// LET'S PLAY BUTTON CLICK EVENT
 	// ********************************
 
 	//The event triggering the text input validation / random pairings for the second and final pages.
-	detailsSection.on("click", "button", () => {
-		
+	detailsSection.on("click", "button", (e) => {
+		e.preventDefault();
+
 		// Resetting the state values on each button click so multiple entries aren't created.	
 		reset();
 		validateForEmptyInputs();
@@ -418,7 +423,7 @@ $($ => {
 			debug(`text input validation failed at first stage. Valid status: ${state.valid}`);
 		
 		} else {
-			duplicateValidation();
+			validateForDuplicates();
 
 			if (!state.valid) {
 				debug(`text duplicate validation failed at second stage. Valid status: ${state.valid}`);
@@ -440,7 +445,7 @@ $($ => {
 	});
 
 	// ********************************
-	// END CLICK EVENT
+	// END CLICK EVENTS
 	// ********************************
 
 }); // document ready fn closing tag

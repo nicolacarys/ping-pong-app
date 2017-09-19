@@ -115,7 +115,14 @@ input {
 
   .error-help-block.has-error {
     font-size: 1.2em; } }
+html {
+  height: 100%;
+  box-sizing: border-box; }
+
 body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
   background-color: #3f689b;
   font-size: 1em;
   text-align: center;
@@ -160,13 +167,15 @@ body {
     box-sizing: border-box; }
   .main-content .details-section {
     visibility: hidden;
-    max-height: 800px; }
+    max-height: 800px;
+    overflow: auto; }
     .main-content .details-section .player-number, .main-content .details-section input {
       width: 80%;
       margin: 8px auto; }
   .main-content .tracker-section {
     visibility: hidden;
-    max-height: 800px; }
+    max-height: 800px;
+    overflow: auto; }
     .main-content .tracker-section .game-pairing {
       padding: 15px;
       margin: 15px auto;
@@ -193,7 +202,11 @@ body {
     transition: visibility 2s, opacity 300ms; }
 
 .footer-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: 80px;
   background-color: #2c4a70;
   border-top: 6px solid #d9dadc; }
   .footer-container .footer img {

@@ -25,7 +25,7 @@
 	<div class="wrapper js__wrapper">
 
 		<header class="header js__header">
-			<img src="images/ping-pong-logo-full-noback.png" alt="Ping Pong Pair Picker logo" />
+			<a href="index.html"><img class="ping-pong-logo-full" src="images/ping-pong-logo-full-noback.png" alt="Ping Pong Pair Picker logo" /></a>
 		</header>
 
 		<div class="main-content">
@@ -34,18 +34,21 @@
 				<h1 class="heading"> How many players are in your tournament? </h1>
 				<h2 class="sub-heading"> Enter an even number</h2>
 
+				<form>
 					<input class="number-input js__entry-numbers" type="number" name="number-of-players" placeholder="0" min="4" max="40" step="2" />
 					<p class="error-help-block js__error-number-input"></p>
 					<button class="button js__button-entry-numbers">Let’s go!</button>
+				</form>	
 			</section>
 
 			<section class="details-section js__details-section">
 				<h1 class="heading">Player Details</h1>
 				<h2 class="sub-heading">Enter the details of each player and click ‘Let’s Play!’ when completed.</h2>
-				<div class="player-details-container js__player-details-container"></div>
-
-				<p class="error-help-block js__error-text-input"></p>
-				<button class="button button-link js__button-players">Let’s play!</button>
+				
+				<form class="player-details-container js__player-details-container">
+					<p class="error-help-block js__error-text-input"></p>
+					<button class="button button-link js__button-players">Let’s play!</button>
+				</form>
 			</section>
 
 			<section class="tracker-section js__tracker-section">
@@ -55,9 +58,8 @@
 		</div>
 
 		<section class="footer-container">
-
 			<footer class="footer">
-				<img src="images/ping-pong-logo-short-noback.png" />
+				<img class="ping-pong-logo-short" src="images/ping-pong-logo-short-noback.png" alt="Ping Pong Pair Picker icon"/>
 				<p class="footer-copy">&copy; Nicola Richardson 2017</p>
 			</footer>
 		</section>
