@@ -10,8 +10,8 @@
 @import "modules/inputs.scss";
 
 html {
-  height: 100%;
-  box-sizing: border-box;
+	height: 100%;
+	box-sizing: border-box; 
 }
 
 body {
@@ -23,13 +23,6 @@ body {
 	text-align: center;
 	font-family: "Roboto", Arial, sans-serif;
 	color: $text-white;
-
-}
-
-
-
-.wrapper {
-
 }
 
 // HEADER STYLES
@@ -83,6 +76,10 @@ body {
 	justify-content: center;
 	padding: 30px;
 
+	::-webkit-scrollbar, -moz-scrollbar, -ms-scrollbar {
+		display: none;
+	}
+
 	.entry-section {
 	max-height: 300px;
 	box-sizing: border-box;
@@ -103,6 +100,7 @@ body {
 		visibility: hidden;
 		max-height: 800px;
 		overflow: auto;
+		padding-bottom: 80px;
 
 		.game-pairing {
 			padding: 15px;
@@ -152,20 +150,14 @@ body {
 	background-color: $background-darkblue;
 	border-top: 6px solid $text-white;
 
-	.footer {
-		// display: flex;
-		// justify-content: center;
-		// margin: 0 auto;
+	img {
+		height: 30px;
+		width: auto;
+		margin: 15px 15px 5px;
+	}
 
-		img {
-			height: 30px;
-			width: auto;
-			margin: 15px 15px 5px;
-		}
-
-		.footer-copy {
-			padding-bottom: 8px;
-		}
+	.footer-copy {
+		padding-bottom: 8px;
 	}
 }
 
