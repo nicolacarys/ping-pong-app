@@ -116,12 +116,12 @@ body {
 			}
 
 			li {
-				margin: 20px;
+				margin: 10px;
 				font-size: 1.2em;
 			}
 
 			li, p {
-				display: inline-block;
+				display: block;
 			}
 		}
 	}
@@ -195,6 +195,15 @@ body {
 		.tracker-section {
 			.game-pairing {
 				width: 70%;
+			
+				li {
+					margin: 15px;
+					font-size: 1.1em;
+				}
+
+				li, p {
+					display: inline-block;
+				}
 			}
 		}
 	}
@@ -229,6 +238,15 @@ body {
 		.tracker-section {
 			.game-pairing {
 				width: 60%;
+			
+				li {
+					margin: 20px;
+					font-size: 1.2em;
+				}
+
+				li, p {
+					display: inline-block;
+				}
 			}
 		}
 	}
@@ -263,6 +281,15 @@ body {
 		.tracker-section {
 			.game-pairing {
 				width: 60%;
+				
+				li {
+					margin: 20px;
+					font-size: 1.2em;
+				}
+
+				li, p {
+					display: inline-block;
+				}
 			}
 		}
 	}
