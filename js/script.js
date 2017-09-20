@@ -400,10 +400,11 @@ $($ => {
 			let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
 			let playerList = $("<ul />").addClass("player-list");
 			let player1 = $("<li />").text(playersRand[i].fullName);
+			let vs = $("<p />").text("vs");
 			let player2 = $("<li />").text(playersRand[i+1].fullName);
 			
 			trackerSection.append(pairContainer); 
-			pairContainer.append(gameNumber, playerList, player1, player2);
+			pairContainer.append(gameNumber, playerList, player1, vs, player2);
 
 			n++;
 		}

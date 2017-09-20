@@ -185,14 +185,15 @@ body {
       width: 80%;
       background-color: #2c4a6f;
       box-shadow: 0 0 20px #6dcff6;
-      list-style: none;
-      text-align: left; }
+      list-style: none; }
       .main-content .tracker-section .game-pairing .game-number {
         color: #717272;
         text-align: right; }
       .main-content .tracker-section .game-pairing li {
-        margin: 15px;
+        margin: 20px;
         font-size: 1.2em; }
+      .main-content .tracker-section .game-pairing li, .main-content .tracker-section .game-pairing p {
+        display: inline-block; }
   .main-content .section-completed {
     max-height: 0;
     overflow: hidden;

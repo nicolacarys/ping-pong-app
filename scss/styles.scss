@@ -109,7 +109,6 @@ body {
 			background-color: $input-blue;
 			box-shadow: 0 0 20px $lightblue;
 			list-style: none;
-			text-align: left;
 
 			.game-number {
 				color: $grey;
@@ -117,8 +116,12 @@ body {
 			}
 
 			li {
-				margin: 15px;
+				margin: 20px;
 				font-size: 1.2em;
+			}
+
+			li, p {
+				display: inline-block;
 			}
 		}
 	}
