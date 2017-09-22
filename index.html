@@ -1,10 +1,11 @@
+<!DOCTYPE html>
+
 <!--
 	This code has been designed with accessibility consdierations in mind.
 
 	The intention is that it is easy for non-proficient technology users to use, and that it works well with screen readers.
 -->
 
-<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
@@ -19,49 +20,47 @@
 	<link rel="stylesheet" type="text/css" href="css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
 
-	<title>P :: P :: P :: P</title>
+	<title>Ping Pong Pair Picker</title>
 </head>
 <body>
 	<div class="wrapper js__wrapper">
 
 		<header class="header js__header">
-			<a href="index.html"><img class="ping-pong-logo-full" src="images/ping-pong-logo-full-noback.png" alt="Ping Pong Pair Picker logo" /></a>
+			<a href="index.html" class="header__link"><img class="header__image" src="images/ping-pong-logo-full-noback.png" alt="Ping Pong Pair Picker" /></a>
 		</header>
 
 		<div class="main-content">
 
-			<section class="entry-section js__entry-section">
-				<h1 class="heading"> How many players are in your tournament? </h1>
-				<h2 class="sub-heading"> Enter an even number</h2>
+			<section class="section section--entry js__entry-section">
+				<h1 class="section__heading section__heading--entry"> How many players are in your tournament? </h1>
+				<h2 class="section__sub-heading section__sub-heading--entry"> Enter an even number</h2>
 
-				<form>
-					<input class="number-input js__entry-numbers" type="number" name="number-of-players" placeholder="0" min="4" max="40" step="2" />
-					<p class="error-help-block js__error-number-input"></p>
-					<button class="button js__button-entry-numbers">Let’s go!</button>
+				<form class="form form--entry">
+					<input class="form__input form__input--entry js__entry-numbers" type="number" name="number-of-players" placeholder="0" min="4" max="40" step="2" />
+					<p class="form__text form__text--error js__error-number-input"></p>
+					<button class="form__button form__button--entry js__button-entry-numbers">Let’s go!</button>
 				</form>	
 			</section>
 
-			<section class="details-section js__details-section">
-				<h1 class="heading">Player Details</h1>
-				<h2 class="sub-heading">Enter the details of each player and click ‘Let’s Play!’ when completed.</h2>
+			<section class="section section--details js__details-section">
+				<h1 class="section__heading section__heading--details">Player Details</h1>
+				<h2 class="section__sub-heading section__sub-headint--details">Enter the details of each player and click ‘Let’s Play!’ when completed.</h2>
 				
-				<form class="player-details-container js__player-details-container">
-					<p class="error-help-block js__error-text-input"></p>
-					<button class="button button-link js__button-players">Let’s play!</button>
+				<form class="form form--details js__player-details-container">
+					<p class="form__text form__text--error js__error-text-input"></p>
+					<button class="form__button form__button--details js__button-players">Let’s play!</button>
 				</form>
 			</section>
 
-			<section class="tracker-section js__tracker-section">
+			<section class="section section--tracker js__tracker-section">
 			</section>
 
 		</div>
 
-		<section class="footer-container">
-			<footer class="footer">
-				<img class="ping-pong-logo-short" src="images/ping-pong-logo-short-noback.png" alt="Ping Pong Pair Picker icon"/>
-				<p class="footer-copy">&copy; Nicola Richardson 2017</p>
-			</footer>
-		</section>
+		<footer class="footer">
+			<img class="footer__image" src="images/ping-pong-logo-short-noback.png" alt="Ping Pong Pair Picker"/>
+			<p class="footer__text">&copy; Nicola Richardson 2017</p>
+		</footer>
 
 	</div> <!-- wrapper -->
 </body>

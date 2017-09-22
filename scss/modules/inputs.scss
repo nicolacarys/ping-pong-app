@@ -3,7 +3,7 @@
 This is the basic stylesheet for inputs across the app. They can be over-written in styles.scss.
 */
 
-input {
+.form__input {
 	display: block;
 	height: 30px;
 	margin: 20px auto;
@@ -21,15 +21,9 @@ input {
 
 }
 
-.main-content {
-
-	.entry-section {
-
-		input {
-			margin-top: 20px;
-			width: 60px;
-		}
-	}
+.form__input--entry {
+	margin-top: 20px;
+	width: 60px;
 }
 
 .has-error {
@@ -40,7 +34,7 @@ input {
 
 }
 
-.error-help-block.has-error {
+.form__text--error.has-error {
 	position: relative;
 	width: 60%;
 	padding: 10px;
@@ -53,7 +47,7 @@ input {
 
 }
 
-.error-help-block:after {
+.form__text--error:after {
 	bottom: 100%;
 	left: 54%;
 	border: solid transparent;
@@ -73,38 +67,31 @@ input {
 	background-color: yellow;
 }
 
-@media (max-width: 767px) and (min-width: 481px) {
+@media (min-width: 481px) {
 	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 
-	input {
-		font-size: 1.1em;
+	.form__input {
+		font-size: 110%;
 	}
 
-	.error-help-block.has-error {
-		font-size: 1.1em;
+	.form__text--error.has-error {
+		font-size: 110%;
 	}
 }
 
-@media (max-width: 1029px) and (min-width: 768px) {
+@media (min-width: 768px) {
 	// This size will work on iPads, other tablets, and desktops.
 
-	input {
-		font-size: 1.2em;
+	.form__input {
+		font-size: 120%;
 	}
 
-	.error-help-block.has-error {
-		font-size: 1.2em;
+	.form__text--error.has-error {
+		font-size: 120%;
 	}
 }
 
-@media (max-width: 1029px) and (min-width: 768px) {
+@media (min-width: 1030px) {
 	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
 	
-	input {
-		font-size: 1.2em;
-	}
-
-	.error-help-block.has-error {
-		font-size: 1.2em;
-	}
 }

@@ -70,6 +70,7 @@ $($ => {
 		
 		/* These functions are only used at a local level.
 		They check the value entered for even / odd, and toggle error classes for the number input and error text. */
+		// triple equals has been used here to exact precision
 		let isEven = (n) => n % 2 === 0;
 		
 		let addErrorClasses = (errorBlockType) => {
@@ -134,13 +135,13 @@ $($ => {
 
 		// Looping over the number inputted to establish how many inputs are needed
 		for (let i = 0; i < numberInputValue; i++) {
-			let fieldContainer = $("<div />").addClass("inputs-container js__inputs-container").attr("id", i);
+			let fieldContainer = $("<div />").addClass("form__block js__inputs-container").attr("id", i);
 
-			let playerNumber = $("<h2 />").addClass("player-number").text(i+1);
+			let playerNumber = $("<h2 />").addClass("form__text form__text--details").text(i+1);
 
-			let forename = $("<input />").attr("id", "player-forename").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 30).addClass("input-text js__forename-input");
+			let forename = $("<input />").attr("id", "player-forename").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 30).addClass("form__input form__input--details js__forename-input");
 
-			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("input-text js__surname-input");
+			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("form__input form__input--details js__surname-input");
 
 			errorDetail.before(fieldContainer);
 			fieldContainer.append(playerNumber, forename, surname);
@@ -149,9 +150,9 @@ $($ => {
 
 	/* These functions toggle section styling based on their active status. 
 	They are sitting at a global level as they are used throughout the script. */
-	let markSectionActive = (sectionName) => sectionName.addClass("section-active");
-	let removeSectionActiveClass = (sectionName) => sectionName.removeClass("section-active");
-	let markSectionCompleted = (sectionName) => sectionName.addClass("section-completed");
+	let markSectionActive = (sectionName) => sectionName.addClass("section--active");
+	let removeSectionActiveClass = (sectionName) => sectionName.removeClass("section--active");
+	let markSectionCompleted = (sectionName) => sectionName.addClass("section--completed");
 
 
 	// ********************************
@@ -171,7 +172,7 @@ $($ => {
 			markSectionActive(detailsSection);
 
 			// This adds a styling class to the header to minimise it after the first page
-			container.find($(".js__header")).addClass("minimise-header");
+			container.find($(".js__header")).addClass("header--minimise");
 
 			debug(`valid status on entry button click: ${state.valid}`);
 			state.valid = false;
@@ -389,22 +390,23 @@ $($ => {
 
 	// Outputting the randomised array as pairs, and inserting them into the DOM as <li>s.
 	let printRandomPairs = (players) => {
-		let trackerHeading = $("<h1 />").addClass("heading").text("Tournament Tracker");
+		let trackerHeading = $("<h1 />").addClass("section__heading section__heading--tracker").text("Tournament Tracker");
 		trackerSection.append(trackerHeading);
 
 		let playersRand = shuffleArray(players);
 		let n = 1;
 
 		for (let i = 0; i < playersRand.length; i += 2) {
-			let pairContainer = $("<div />").addClass("game-pairing");
-			let gameNumber = $("<p />").addClass("game-number").text("Game " + n);
-			let playerList = $("<ul />").addClass("player-list");
-			let player1 = $("<li />").text(playersRand[i].fullName);
-			let vs = $("<p />").text("vs");
-			let player2 = $("<li />").text(playersRand[i+1].fullName);
+			let pairContainer = $("<div />").addClass("block block--pairings");
+			let gameNumber = $("<p />").addClass("block__text block__text--pairings game-number").text("Game " + n);
+			let playerList = $("<ul />").addClass("list list--players");
+			let player1 = $("<li />").addClass("list__item list__item--players").text(playersRand[i].fullName);
+			let vs = $("<li />").addClass("list__item list__item--players list__item--versus").text("vs");
+			let player2 = $("<li />").addClass("list__item list__item--players").text(playersRand[i+1].fullName);
 			
 			trackerSection.append(pairContainer); 
-			pairContainer.append(gameNumber, playerList, player1, vs, player2);
+			pairContainer.append(gameNumber, playerList);
+			playerList.append(player1, vs, player2);
 
 			n++;
 		}

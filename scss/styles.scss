@@ -15,60 +15,67 @@ html {
 }
 
 body {
+
 	position: relative;
 	margin: 0;
 	min-height: 100%;
 	background-color: $background-blue;
 	font-size: 1em;
 	text-align: center;
-	font-family: "Roboto", Arial, sans-serif;
+
+	// a system font is used here to avoid FOIT
+	font-family: Arial, sans-serif;
 	color: $text-white;
 }
 
-// HEADER STYLES
+// ********************************
+// HEADER STYLING
+// ********************************
 
 .header {
 	width: 100%;
 	max-height: 140px;
 	background-color: $background-darkblue;
 	border-bottom: 6px solid $text-white;
-
-	img {
-		width: 80%;
-		max-width: 500px;
-		height: auto;
-		margin: 15px;
-	}
 }
 
-.minimise-header {
+.header__image {
+	width: 80%;
+	max-width: 500px;
+	height: auto;
+	margin: 15px;
+}
+
+.header--minimise {
 	max-height: 100px;
 	overflow: hidden;
 	transition: max-height 0.5s;
 
-	img {
+	.header__image {
 		margin: 3px;
 	}
 }
 
-
-
+// ********************************
 // HEADING STYLES
+// ********************************
 
-.heading {
+.section__heading {
 	margin: 15px;
 	font-size: 1.4em;
 	line-height: 1.3em;
 }
 
-.sub-heading {
+.section__sub-heading {
 	margin: 15px 0;
 	font-size: 1.1em;
 	line-height: 1.3em;
 }
 
 
-// SECTION STYLES
+// ********************************
+// SECTION STYLING
+// ********************************
 
 .main-content {
 	display: flex;
@@ -79,72 +86,73 @@ body {
 	::-webkit-scrollbar, -moz-scrollbar, -ms-scrollbar {
 		display: none;
 	}
-
-	.entry-section {
-	max-height: 300px;
-	box-sizing: border-box;
-	}
-
-	.details-section {
-		visibility: hidden;
-		max-height: 800px;
-		overflow: auto;
-
-		.player-number, input {
-			width: 80%;
-			margin: 8px auto;
-		}
-	}
-
-	.tracker-section {
-		visibility: hidden;
-		max-height: 800px;
-		overflow: auto;
-		padding-bottom: 80px;
-
-		.game-pairing {
-			padding: 15px;
-			margin: 15px auto;
-			width: 80%;
-			background-color: $input-blue;
-			box-shadow: 0 0 20px $lightblue;
-			list-style: none;
-
-			.game-number {
-				color: $grey;
-				text-align: right;
-			}
-
-			li {
-				margin: 10px;
-				font-size: 1.2em;
-			}
-
-			li, p {
-				display: block;
-			}
-		}
-	}
-
-	.section-completed {
-		max-height: 0;
-		overflow: hidden;
-		opacity: 0;
-		transition: opacity 300ms;
-		transition: max-height 1s;
-	}
-
-	.section-active {
-		visibility: visible;
-	  opacity: 1;
-	  transition: visibility 2s, opacity 300ms;
-	}
-
 }
 
-// FOOTER STYLES
+.section--entry {
+	max-height: 300px;
+	box-sizing: border-box;
+}
 
-.footer-container {
+.section--details {
+	visibility: hidden;
+	max-height: 800px;
+	overflow: auto;
+}
+
+.form__text--details, .form__input--details {
+	width: 80%;
+	margin: 8px auto;
+}
+
+.section--tracker {
+	visibility: hidden;
+	max-height: 800px;
+	overflow: auto;
+	padding-bottom: 80px;
+}
+
+.block--pairings {
+	padding: 15px;
+	margin: 15px auto;
+	width: 80%;
+	background-color: $input-blue;
+	box-shadow: 0 0 20px $lightblue;
+	list-style: none;
+}
+
+.list__item--players {
+	margin: 10px;
+	font-size: 1.2em;
+}
+
+.list__item--versus {
+	display: block;
+}
+
+.block__text--pairings {
+	color: $grey;
+	text-align: right;
+}
+
+.section--completed {
+	max-height: 0;
+	overflow: hidden;
+	opacity: 0;
+	transition: opacity 300ms;
+	transition: max-height 1s;
+}
+
+.section--active {
+	visibility: visible;
+  opacity: 1;
+  transition: visibility 2s, opacity 300ms;
+}
+
+// ********************************
+// FOOTER STYLING
+// ********************************
+
+.footer {
 	position: absolute;
 	bottom: 0;
 	left: 0;
@@ -152,146 +160,91 @@ body {
 	height: 80px;
 	background-color: $background-darkblue;
 	border-top: 6px solid $text-white;
-
-	img {
-		height: 30px;
-		width: auto;
-		margin: 15px 15px 5px;
-	}
-
-	.footer-copy {
-		padding-bottom: 8px;
-	}
 }
 
-// MEDIA QUERIES
+.footer__image {
+	height: 30px;
+	width: auto;
+	margin: 15px 15px 5px;
+}
 
-@media (max-width: 767px) and (min-width: 481px) {
+.footer__text{
+	padding-bottom: 8px;
+}
+
+// ********************************
+// MEDIA QUERIES
+// ********************************
+
+@media (min-width: 481px) {
 	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 
-	.heading {
+	.section__heading {
 		font-size: 1.6em;
 	}
 
-	.sub-heading {
+	.section__sub-heading {
 		font-size: 1.3em;
 	}
 
-	.main-content {
-
-		.details-section {
-
-			.inputs-container {
-
-				.player-number, input {
-					display: inline-block;
-					width: auto;
-					padding: 5px 0;
-					margin: 10px 5px;
-				}
-			}
-		}
-
-		.tracker-section {
-			.game-pairing {
-				width: 70%;
-			
-				li {
-					margin: 15px;
-					font-size: 1.1em;
-				}
-
-				li, p {
-					display: inline-block;
-				}
-			}
-		}
-	}
-}
-
-@media (max-width: 1029px) and (min-width: 768px) {
-	// This size will work on iPads, other tablets, and desktops.
-
-	.heading {
-		font-size: 1.8em;
+	.form__text--details, .form__input--details {
+		display: inline-block;
+		width: auto;
+		padding: 5px 0;
+		margin: 10px 5px;
 	}
 
-	.sub-heading {
-		font-size: 1.5em;
+	.block--pairings {
+		width: 70%;
+	}
+		
+	.list__item--players {
+		margin: 15px;
+		font-size: 1.1em;
 	}
 
-	.main-content {
-
-		.details-section {
-
-			.inputs-container {
-
-				.player-number, input {
-					display: inline-block;
-					width: auto;
-					padding: 5px;
-					margin: 10px;
-				}
-			}
-		}
-
-		.tracker-section {
-			.game-pairing {
-				width: 60%;
-			
-				li {
-					margin: 20px;
-					font-size: 1.2em;
-				}
-
-				li, p {
-					display: inline-block;
-				}
-			}
-		}
+	.list__item--players, p {
+		display: inline-block;
 	}
 }
 
 @media (min-width: 768px) {
-	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
-	
-	.heading {
+	// This size will work on iPads, other tablets, and desktops.
+
+	.section__heading {
 		font-size: 1.8em;
 	}
 
-	.sub-heading {
+	.section__sub-heading {
 		font-size: 1.5em;
 	}
 
-	.main-content {
+	.form__text--details, .form__input--details {
+		display: inline-block;
+		width: auto;
+		padding: 5px;
+		margin: 10px;
+	}
 
-		.details-section {
+	.block--pairings {
+		width: 60%;
+	}		
 
-			.inputs-container {
+	.list__item--players {
+		margin: 20px;
+		font-size: 1.2em;
+	}
+}
 
-				.player-number, input {
-					display: inline-block;
-					width: auto;
-					padding: 5px;
-					margin: 10px;
-				}
-			}
-		}
+@media (min-width: 1030px) {
+	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
+	
+	.section__heading {
+		font-size: 1.8em;
+	}
 
-		.tracker-section {
-			.game-pairing {
-				width: 60%;
-				
-				li {
-					margin: 20px;
-					font-size: 1.2em;
-				}
-
-				li, p {
-					display: inline-block;
-				}
-			}
-		}
+	.section__sub-heading {
+		font-size: 1.5em;
 	}
 }
 
