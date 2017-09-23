@@ -141,11 +141,11 @@ $($ => {
 
 			let playerNumber = $("<h2 />").addClass("form__text form__text--details").text(i+1);
 
-			let forename = $("<input />").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 12).addClass("form__input form__input--details js__forename-input");
+			let forename = $("<input />").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 12).addClass("form__input form__input--details js__forename-input").attr("aria-label", "forename field");
 
-			let surname = $("<input />").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 12).addClass("form__input form__input--details js__surname-input");
+			let surname = $("<input />").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 12).addClass("form__input form__input--details js__surname-input").attr("aria-label", "surname field");
 
-			let completedTick = $("<img />").attr("src", "images/completed-tick.png").attr("alt", "completed tick").addClass("form--tick js__completed-tick");
+			let completedTick = $("<img />").attr("src", "images/completed-tick.png").attr("alt", "completed tick").addClass("form--tick js__completed-tick").attr("aria-label", "fields accepted");
 
 			errorDetail.before(fieldContainer);
 			fieldContainer.append(playerNumber, forename, surname, completedTick);
@@ -354,7 +354,7 @@ $($ => {
 
 	// Capturing the first and last names inputted into the text inputs and storing them in separate arrays.
 	let storePlayerNames = (forename, surname) => {
-		let pushSeparateNamesToArray = (nameType, nameTextInput) => nameType.push(nameTextInput.val());
+		let pushSeparateNamesToArray = (nameType, nameTextInput) => nameType.push(nameTextInput.val().trim());
 
 		findInputs().each((i, textInput) => {
 			if ($(textInput).hasClass("js__forename-input")) {
