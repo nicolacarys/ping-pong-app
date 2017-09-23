@@ -72,6 +72,8 @@ $($ => {
 		They check the value entered for even / odd, and toggle error classes for the number input and error text. */
 		// triple equals has been used here to exact precision
 		let isEven = (n) => n % 2 === 0;
+
+		let numbersOnly = /^\d+$/;
 		
 		let addErrorClasses = (errorBlockType) => {
 			let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
@@ -95,37 +97,45 @@ $($ => {
 			removeErrorClasses(errorEntry);
 			debug("number validation: SUCCESS - field isn't empty");
 
-			if (numberEntered < 4) {
+			if (!numbersOnly.test(numberEntered)) {
 				addErrorClasses(errorEntry);
-
-				// Template literals have been used to increase readability in the script
-				errorEntry.text(`You can't have a tournament with only ${numberEntered} players! Enter a number between 4 and 100.`);
-				debug("number validation: input value is under 4");
+				errorEntry.text("Please enter a valid number.");
+				debug("number validation: non-numerical values entered");
 
 			} else {
-				removeErrorClasses(errorEntry);
-				debug("number validation: SUCCESS - value is more than 4");
 
-				if (numberEntered > 100) {
+				if (numberEntered < 4) {
 					addErrorClasses(errorEntry);
-					errorEntry.text("Please enter a number under, or equal to, 100.");
-					debug("number validation: input value is over 100");
-				
+
+					// Template literals have been used to increase readability in the script
+					errorEntry.text(`You can't have a tournament with only ${numberEntered} players! Enter a number between 4 and 100.`);
+					debug("number validation: input value is under 4");
+
 				} else {
 					removeErrorClasses(errorEntry);
-					debug("number validation: SUCCESS - value is less than 100");
+					debug("number validation: SUCCESS - value is more than 4");
 
-					if (!isEven(numberEntered)) {
-					addErrorClasses(errorEntry);
-					errorEntry.text("Your number needs to be even… no subs in this game!");
-					debug("number validation: input value is an odd number");
-
+					if (numberEntered > 100) {
+						addErrorClasses(errorEntry);
+						errorEntry.text("Please enter a number under, or equal to, 100.");
+						debug("number validation: input value is over 100");
+					
 					} else {
 						removeErrorClasses(errorEntry);
-						state.valid = true;
-						debug("number validation: SUCCESS - value is even");
+						debug("number validation: SUCCESS - value is less than 100");
 
-						return state.numberOfPlayers = numberEntered;
+						if (!isEven(numberEntered)) {
+						addErrorClasses(errorEntry);
+						errorEntry.text("Your number needs to be even… no subs in this game!");
+						debug("number validation: input value is an odd number");
+
+						} else {
+							removeErrorClasses(errorEntry);
+							state.valid = true;
+							debug("number validation: SUCCESS - value is even");
+
+							return state.numberOfPlayers = numberEntered;
+						}
 					}
 				}
 			}
