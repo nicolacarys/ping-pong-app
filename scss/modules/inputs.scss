@@ -10,15 +10,23 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	background-color: $input-blue;
 	border: transparent;
 	border-radius: 6px;
+	color: $text-white;
 	font-size: 1em;
 	text-align: center;
+
+	&::placeholder {
+		color: $text-white;
+	}
 
 	&:focus {
 		background-color: $text-white;
 		outline: none;
 		color: $input-blue;
-	}
 
+		&::placeholder {
+			color: $input-blue;
+		}
+	}
 }
 
 .form__input--entry {
@@ -32,6 +40,9 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	background-color: $text-white;
 	color: $input-blue;
 
+	&::placeholder {
+		color: $input-blue;
+	}
 }
 
 .form__text--error.has-error {
@@ -65,6 +76,21 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 
 .duplicate {
 	background-color: yellow;
+}
+
+.form--tick {
+	visibility: hidden;
+	height: 20px;
+	width: auto;
+	margin-left: 5px
+}
+
+.form--tick--completed {
+	visibility: visible;
+}
+
+.form--tick--error {
+	visibility: hidden;
 }
 
 @media (min-width: 481px) {

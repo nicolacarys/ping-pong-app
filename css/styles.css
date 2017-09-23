@@ -3,18 +3,17 @@
 
 	Each breakpoint has been separated out and added to with the intention of giving minimal styling for hand-held devices.
 */
+/* The main styling parts have been separated out to try and keep it easy to find and edit styles when needed. It also means that the main stylesheet is kept compact and can focus on general styling. */
 /*
 
 This contains the colour variables used across the app.
 
 */
 /*
-This contains the fonts used across the app.
+
+This contains the mixins used across the app.
+
 */
-@font-face {
-  font-family: 'Roboto';
-  font-weight: normal;
-  src: url("../fonts/Roboto/Roboto-Regular.ttf") format("truetype"); }
  /*
  This is the basic stylesheet for buttons across the app.
 */
@@ -49,12 +48,17 @@ This is the basic stylesheet for inputs across the app. They can be over-written
   background-color: #2c4a6f;
   border: transparent;
   border-radius: 6px;
+  color: #d9dadc;
   font-size: 1em;
   text-align: center; }
+  .form__input::placeholder {
+    color: #d9dadc; }
   .form__input:focus {
     background-color: #d9dadc;
     outline: none;
     color: #2c4a6f; }
+    .form__input:focus::placeholder {
+      color: #2c4a6f; }
 
 .form__input--entry {
   margin-top: 20px;
@@ -65,6 +69,8 @@ This is the basic stylesheet for inputs across the app. They can be over-written
   box-shadow: 0 0 25px #122748;
   background-color: #d9dadc;
   color: #2c4a6f; }
+  .has-error::placeholder {
+    color: #2c4a6f; }
 
 .form__text--error.has-error {
   position: relative;
@@ -93,6 +99,18 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 
 .duplicate {
   background-color: yellow; }
+
+.form--tick {
+  visibility: hidden;
+  height: 20px;
+  width: auto;
+  margin-left: 5px; }
+
+.form--tick--completed {
+  visibility: visible; }
+
+.form--tick--error {
+  visibility: hidden; }
 
 @media (min-width: 481px) {
   .form__input {
@@ -145,7 +163,7 @@ body {
   line-height: 1.3em; }
 
 .section__sub-heading {
-  margin: 15px 0;
+  margin: 15px;
   font-size: 1.1em;
   line-height: 1.3em; }
 
@@ -179,7 +197,7 @@ body {
 .block--pairings {
   padding: 15px;
   margin: 15px auto;
-  width: 80%;
+  width: 90%;
   background-color: #2c4a6f;
   box-shadow: 0 0 20px #6dcff6;
   list-style: none; }
@@ -192,8 +210,8 @@ body {
   display: block; }
 
 .block__text--pairings {
-  color: #717272;
-  text-align: right; }
+  color: #d9dadc;
+  text-align: center; }
 
 .section--completed {
   max-height: 0;
@@ -224,7 +242,9 @@ body {
 .footer__text {
   padding-bottom: 8px; }
 
-@media (min-width: 481px) {
+/* Media queries have been written with min-width specified, rather than max-width. 
+This is because this app is mobile-first, so all base styles are added to as the screen grows.*/
+@media screen and (min-width: 481px) {
   .section__heading {
     font-size: 1.6em; }
 
@@ -238,15 +258,15 @@ body {
     margin: 10px 5px; }
 
   .block--pairings {
-    width: 70%; }
+    width: 80%; }
 
   .list__item--players {
     margin: 15px;
     font-size: 1.1em; }
 
-  .list__item--players, p {
+  .list__item--players, .list__item--versus {
     display: inline-block; } }
-@media (min-width: 768px) {
+@media screen and (min-width: 768px) {
   .section__heading {
     font-size: 1.8em; }
 
@@ -260,12 +280,12 @@ body {
     margin: 10px; }
 
   .block--pairings {
-    width: 60%; }
+    width: 70%; }
 
   .list__item--players {
     margin: 20px;
     font-size: 1.2em; } }
-@media (min-width: 1030px) {
+@media screen and (min-width: 1030px) {
   .section__heading {
     font-size: 1.8em; }
 

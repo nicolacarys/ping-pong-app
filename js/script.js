@@ -12,6 +12,7 @@ $($ => {
 	const debugMode = true;
 				debug = (message) => debugMode ? console.log(message) : null;
 
+
 	// Setting up the global variables
 	const container = $(".js__wrapper"),
 				entrySection = $(".js__entry-section"),
@@ -22,27 +23,27 @@ $($ => {
 	let errorEntry = $(".js__error-number-input"),
 			errorDetail = $(".js__error-text-input");
 
+	/* This variable includes the main state variables for the app. It is populated from the reset() function except for numberOfPlayers which is only reset on a page reload. It is designed to separate state variables from local variables, with readability as a consideration. */
 	let state = {
-					numberOfPlayers: '',
-					forenames: [],
-					surnames: [],
-					playerDetails: [],
-					tempPlayerDetailsArray: [],
-					valid: false,
+			numberOfPlayers: '',
 	};
 
-	// This function sets the initial state of the app and is called at the start of the code
-	// let init = () => {
-	// 	numberOfPlayers = "";
-	// 	forenames = [];
-	// 	surnames = [];
-	// 	playerDetails = [];
-	// 	tempPlayerDetailsArray = [];
-	// 	valid = false;
-	// 	debug("state initialised");
-	// };
+	// Initialising function establishing the state and main events in the app
+	let init = () => {
+		reset();
 
-	/* This function is used to reset variables affected by button clicks. 
+		entrySection.on("click", "button", (e) => {
+			e.preventDefault();
+			entrySectionClick();
+		});
+
+		detailsSection.on("click", "button", (e) => {
+			e.preventDefault();
+			detailSectionClick();
+		});
+	};
+
+	/* This function is used to reset variables affected by button clicks. It runs in the init() function to initialise the state, but is also called on a button click.
 	It is included to allow functions to run with clean states and not accumulate redundant data. */
 	let reset = () => {
 		state.forenames = [];
@@ -56,8 +57,7 @@ $($ => {
 // ********************************************************************
 	
 	// Initialising the app state
-	// init();
-
+	init();
 
 	/* These functions are used to add error classes to text blocks when error messages need to be shown.
 	These functions are called throughout the script, so are sitting at a global level. */
@@ -76,12 +76,12 @@ $($ => {
 		let addErrorClasses = (errorBlockType) => {
 			let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
 			addErrorTextClass(errorBlockType);
-		}
+		};
 
 		let removeErrorClasses = (errorBlockType) => {
 			let removeErrorInputClass = () => entrySection.find($("input")).removeClass("has-error");
 			removeErrorTextClass(errorBlockType);
-		}
+		};
 
 		/* Validation checks to run on the number input.
 
@@ -97,6 +97,8 @@ $($ => {
 
 			if (numberEntered < 4) {
 				addErrorClasses(errorEntry);
+
+				// Template literals have been used to increase readability in the script
 				errorEntry.text(`You can't have a tournament with only ${numberEntered} players! Enter a number between 4 and 100.`);
 				debug("number validation: input value is under 4");
 
@@ -139,12 +141,14 @@ $($ => {
 
 			let playerNumber = $("<h2 />").addClass("form__text form__text--details").text(i+1);
 
-			let forename = $("<input />").attr("id", "player-forename").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 30).addClass("form__input form__input--details js__forename-input");
+			let forename = $("<input />").attr("type", "text").attr("placeholder", "First Name").attr("maxlength", 12).addClass("form__input form__input--details js__forename-input");
 
-			let surname = $("<input />").attr("id", "player-surname").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 30).addClass("form__input form__input--details js__surname-input");
+			let surname = $("<input />").attr("type", "text").attr("placeholder", "Last Name").attr("maxlength", 12).addClass("form__input form__input--details js__surname-input");
+
+			let completedTick = $("<img />").attr("src", "images/completed-tick.png").attr("alt", "completed tick").addClass("form--tick js__completed-tick");
 
 			errorDetail.before(fieldContainer);
-			fieldContainer.append(playerNumber, forename, surname);
+			fieldContainer.append(playerNumber, forename, surname, completedTick);
 		}
 	};
 
@@ -160,9 +164,7 @@ $($ => {
 	// ********************************
 
 	//The event triggering the validation checks / input generation for the first page.
-	entrySection.on("click", "button", (e) => {
-		e.preventDefault();
-
+	let entrySectionClick = () => {
 		let inputValue = container.find($(".js__entry-numbers")).val();
 		validateNumberInput(inputValue);
 		
@@ -181,7 +183,7 @@ $($ => {
 		} else {
 			debug("number validation failed");
 		}
-	});
+	};
 
 	// ********************************
 	// END CLICK EVENT
@@ -219,6 +221,22 @@ $($ => {
 		toggleHelpBlockErrorStatus(textInput, errorBlockType);
 	};
 
+	let toggleCompletedTick = () => {
+		let playerInputs = detailsContainer.find(".js__inputs-container");
+
+		playerInputs.each((i, container) => {
+			let forenameInput = $(container).find(".js__forename-input");
+			let surnameInput = $(container).find(".js__surname-input");
+			let completedTick = $(container).find(".js__completed-tick");
+
+			if (forenameInput.hasClass("has-error") || surnameInput.hasClass("has-error")) {
+				completedTick.addClass("form--tick--error");
+			} else {
+				completedTick.removeClass("form--tick--error").addClass("form--tick--completed");
+			}
+		});
+	};
+
 	// Finding the empty text inputs and pushing them to an array for use in the validateTextInput function.
 	let findEmptyInputs = (textInputs) => {
 		let emptyInputs = [];
@@ -240,16 +258,44 @@ $($ => {
 			state.valid = true;
 			debug(`inputs all filled. Valid status: ${state.valid}`);
 		} 
+
+		toggleCompletedTick();
 	};
 
 
 	// *** DUPLICATE VALIDATION FUNCTIONS ***
+
+	// Function to visually highlight duplicate fields to help the user identify where they have errors.
+	let highlightDuplicates = (duplicatesArray) => {
+		
+		// Mapping over the values found for duplicate entries. Index values used as per the findDuplicates() function below.
+		duplicatesArray.map(val => {
+			debug(`index = ${val}`);
+			
+			let containers = detailsContainer.find(".js__inputs-container");
+
+			// Using each value to try and match the related id of the individual inputs containers.
+			containers.each((i, container) => {
+				debug(`current value = ${val}`);
+				// parsing the container id into an integer for an exact comparison with the current value.
+				let currentId = parseInt($(container).attr("id"));
+
+				if (currentId === val) {
+					$(container).find("input").addClass("has-error");
+				}
+			});
+		}); 
+
+		// Running this function again to update the completed status of the fields.
+		toggleCompletedTick();
+	};
 
 
 	// Searching an array for duplicate entries using indexOf()
 	let findDuplicates = (players) => {
 		let fullNames = players.map(player => player.fullName);
 
+		// Returning an array of objects showing which entries are duplicates.
 		let fullNameIndex = fullNames.map((name, index) => {
 			return {
 				index: index,
@@ -258,42 +304,21 @@ $($ => {
 		});
 
 		let duplicates = fullNameIndex.filter(item => item.index !== item.indexOf);
+
+		// Getting the index value of the duplicate entries into a separate array.
+		let indexVals = duplicates.map(({ index }) => index);
+		debug(`indexVals = ${indexVals}`);
+
+		// Getting the index value of the first entered versions of duplicate entries and pushing to a new array.
+		let indexOfVals = duplicates.map(({ indexOf }) => indexOf);
+		debug(`indexOfVals = ${indexOfVals}`);
+
+		highlightDuplicates(indexVals);
+		highlightDuplicates(indexOfVals);
+
 		debug(duplicates);
 		return duplicates;
 	};
-
-/*
-	HIGHLIGHTING THE INPUTS OF DUPLICATE ENTRIES
-	THIS CODE DOESN'T WORK (YET)
-
-	let highlightDuplicates = () => {
-
-		// get the indexOf values (these will be the position of the original names in state.playerDetails array)
-		let indexOfVals = duplicates.map(({ indexOf }) => indexOf);
-		debug(indexOfVals);
-
-		// get the indexes of items in duplicates array (these are the duplicate entries)
-		let indexVals = duplicates.map(({ index }) => index);
-		debug(indexVals);
-
-		// map over indexOfVals and for each value, compare that with the data id of the containers. If it matches - WOO!
-
-		indexOfVals.forEach(value => {
-			$("js__inputs-container").each((i, container) => { 
-				let dataId = $(container).attr("id");
-
-				debug("dataId: " + dataId);
-
-				// highlight the inputs in those containers
-				if (value === dataId) {
-					$(container).find("input").addClass("duplicate");
-				} else {
-					debug("could not find the indexOf duplicate container");
-				}
-			});
-		});
-	};
-*/
 
 	//Creating a temporary playerDetails array to use in validation checks.
 	let populateTempPlayerDetailsArr = (forename, surname, numberOfEntries) => {
@@ -309,7 +334,6 @@ $($ => {
 
 		// If there are items in the duplicates array, an error message is returned.
 		if (duplicates.length) {
-			// highlightDuplicates();
 
 			addErrorTextClass(errorDetail);
 			errorDetail.text("There are duplicate names in your player list. Please make each player uniquely identifiable.");
@@ -392,7 +416,7 @@ $($ => {
 	let printRandomPairs = (players) => {
 		let trackerHeading = $("<h1 />").addClass("section__heading section__heading--tracker").text("Tournament Tracker");
 		trackerSection.append(trackerHeading);
-
+		
 		let playersRand = shuffleArray(players);
 		let n = 1;
 
@@ -418,9 +442,7 @@ $($ => {
 	// ********************************
 
 	//The event triggering the text input validation / random pairings for the second and final pages.
-	detailsSection.on("click", "button", (e) => {
-		e.preventDefault();
-
+	let detailSectionClick = () => {
 		// Resetting the state values on each button click so multiple entries aren't created.	
 		reset();
 		validateForEmptyInputs();
@@ -448,7 +470,7 @@ $($ => {
 				debug(`valid reset: ${state.valid}`);
 			}
 		}
-	});
+	};
 
 	// ********************************
 	// END CLICK EVENTS

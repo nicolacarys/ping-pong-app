@@ -1,0 +1,12 @@
+/*
+
+This contains the mixins used across the app.
+
+*/
+
+@mixin heading-styling ($font-size) {
+	margin: 15px;
+	font-size: $font-size;
+	line-height: 1.3em;
+}
+

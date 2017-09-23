@@ -4,8 +4,9 @@
 	Each breakpoint has been separated out and added to with the intention of giving minimal styling for hand-held devices.
 */
 
+/* The main styling parts have been separated out to try and keep it easy to find and edit styles when needed. It also means that the main stylesheet is kept compact and can focus on general styling. */
 @import "partials/variables.scss";
-@import "partials/fonts.scss";
+@import "partials/mixins.scss";
 @import "modules/buttons.scss";
 @import "modules/inputs.scss";
 
@@ -15,7 +16,6 @@ html {
 }
 
 body {
-
 	position: relative;
 	margin: 0;
 	min-height: 100%;
@@ -39,6 +39,7 @@ body {
 	border-bottom: 6px solid $text-white;
 }
 
+// main logo styling
 .header__image {
 	width: 80%;
 	max-width: 500px;
@@ -46,6 +47,7 @@ body {
 	margin: 15px;
 }
 
+// styling to shrink the header slightly on pages other than the main page. This has been done to give the content slightly more space on the screen.
 .header--minimise {
 	max-height: 100px;
 	overflow: hidden;
@@ -61,15 +63,11 @@ body {
 // ********************************
 
 .section__heading {
-	margin: 15px;
-	font-size: 1.4em;
-	line-height: 1.3em;
+	@include heading-styling(1.4em);
 }
 
 .section__sub-heading {
-	margin: 15px 0;
-	font-size: 1.1em;
-	line-height: 1.3em;
+	@include heading-styling(1.1em);
 }
 
 
@@ -114,7 +112,7 @@ body {
 .block--pairings {
 	padding: 15px;
 	margin: 15px auto;
-	width: 80%;
+	width: 90%;
 	background-color: $input-blue;
 	box-shadow: 0 0 20px $lightblue;
 	list-style: none;
@@ -130,10 +128,11 @@ body {
 }
 
 .block__text--pairings {
-	color: $grey;
-	text-align: right;
+	color: $text-white;
+	text-align: center;
 }
 
+// these two styles hide / show sections when they have been passed
 .section--completed {
 	max-height: 0;
 	overflow: hidden;
@@ -162,6 +161,7 @@ body {
 	border-top: 6px solid $text-white;
 }
 
+// compact logo styling
 .footer__image {
 	height: 30px;
 	width: auto;
@@ -176,9 +176,11 @@ body {
 // MEDIA QUERIES
 // ********************************
 
-@media (min-width: 481px) {
-	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
+/* Media queries have been written with min-width specified, rather than max-width. 
+This is because this app is mobile-first, so all base styles are added to as the screen grows.*/
 
+// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
+@media screen and (min-width: 481px) {
 	.section__heading {
 		font-size: 1.6em;
 	}
@@ -195,7 +197,7 @@ body {
 	}
 
 	.block--pairings {
-		width: 70%;
+		width: 80%;
 	}
 		
 	.list__item--players {
@@ -203,14 +205,13 @@ body {
 		font-size: 1.1em;
 	}
 
-	.list__item--players, p {
+	.list__item--players, .list__item--versus {
 		display: inline-block;
 	}
 }
 
-@media (min-width: 768px) {
-	// This size will work on iPads, other tablets, and desktops.
-
+// This size will work on iPads, other tablets, and desktops.
+@media screen and (min-width: 768px) {
 	.section__heading {
 		font-size: 1.8em;
 	}
@@ -227,7 +228,7 @@ body {
 	}
 
 	.block--pairings {
-		width: 60%;
+		width: 70%;
 	}		
 
 	.list__item--players {
@@ -236,9 +237,8 @@ body {
 	}
 }
 
-@media (min-width: 1030px) {
-	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
-	
+// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
+@media screen and (min-width: 1030px) {
 	.section__heading {
 		font-size: 1.8em;
 	}
