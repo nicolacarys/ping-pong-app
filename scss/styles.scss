@@ -109,6 +109,10 @@ body {
 	padding-bottom: 80px;
 }
 
+.section__sub-heading--tracker {
+	margin-bottom: 30px;
+}
+
 .block--pairings {
 	padding: 15px;
 	margin: 15px auto;
@@ -120,7 +124,7 @@ body {
 
 .list__item--players {
 	margin: 10px;
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 .list__item--versus {
@@ -179,7 +183,7 @@ body {
 /* Media queries have been written with min-width specified, rather than max-width. 
 This is because this app is mobile-first, so all base styles are added to as the screen grows.*/
 
-// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
+// This is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 @media screen and (min-width: 481px) {
 	.section__heading {
 		font-size: 1.6em;
@@ -202,11 +206,14 @@ This is because this app is mobile-first, so all base styles are added to as the
 		
 	.list__item--players {
 		margin: 15px;
-		font-size: 1.1em;
+		font-size: 1.2em;
 	}
 
-	.list__item--players, .list__item--versus {
-		display: inline-block;
+	// This is a small fix for the styling of inputs for smaller screens in this size bracket
+	@media screen and (max-width: 522px) {
+		.form__input--details {
+			width: 170px;
+		}
 	}
 }
 
@@ -228,12 +235,16 @@ This is because this app is mobile-first, so all base styles are added to as the
 	}
 
 	.block--pairings {
-		width: 70%;
+		width: 85%;
 	}		
 
 	.list__item--players {
 		margin: 20px;
-		font-size: 1.2em;
+		font-size: 1.3em;
+	}
+
+	.list__item--players, .list__item--versus {
+		display: inline-block;
 	}
 }
 

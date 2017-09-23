@@ -415,7 +415,9 @@ $($ => {
 	// Outputting the randomised array as pairs, and inserting them into the DOM as <li>s.
 	let printRandomPairs = (players) => {
 		let trackerHeading = $("<h1 />").addClass("section__heading section__heading--tracker").text("Tournament Tracker");
-		trackerSection.append(trackerHeading);
+		let trackerSubheading = $("<h2 />").addClass("section__sub-heading section__sub-heading--tracker").text("These are the pairings for round 1 of your tournament. Good luck!");
+		
+		trackerSection.append(trackerHeading, trackerSubheading);
 		
 		let playersRand = shuffleArray(players);
 		let n = 1;

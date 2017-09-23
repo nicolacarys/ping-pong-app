@@ -194,6 +194,9 @@ body {
   overflow: auto;
   padding-bottom: 80px; }
 
+.section__sub-heading--tracker {
+  margin-bottom: 30px; }
+
 .block--pairings {
   padding: 15px;
   margin: 15px auto;
@@ -204,7 +207,7 @@ body {
 
 .list__item--players {
   margin: 10px;
-  font-size: 1.2em; }
+  font-size: 1.1em; }
 
 .list__item--versus {
   display: block; }
@@ -262,10 +265,10 @@ This is because this app is mobile-first, so all base styles are added to as the
 
   .list__item--players {
     margin: 15px;
-    font-size: 1.1em; }
-
-  .list__item--players, .list__item--versus {
-    display: inline-block; } }
+    font-size: 1.2em; } }
+@media screen and (min-width: 481px) and (max-width: 522px) {
+  .form__input--details {
+    width: 170px; } }
 @media screen and (min-width: 768px) {
   .section__heading {
     font-size: 1.8em; }
@@ -280,11 +283,14 @@ This is because this app is mobile-first, so all base styles are added to as the
     margin: 10px; }
 
   .block--pairings {
-    width: 70%; }
+    width: 85%; }
 
   .list__item--players {
     margin: 20px;
-    font-size: 1.2em; } }
+    font-size: 1.3em; }
+
+  .list__item--players, .list__item--versus {
+    display: inline-block; } }
 @media screen and (min-width: 1030px) {
   .section__heading {
     font-size: 1.8em; }
