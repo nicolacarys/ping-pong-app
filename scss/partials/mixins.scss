@@ -10,3 +10,10 @@ This contains the mixins used across the app.
 	line-height: 1.3em;
 }
 
+@mixin hidden-section () {
+	visibility: hidden;
+	// max-height: 800px;
+	opacity: 0;
+	overflow: auto;
+}
+

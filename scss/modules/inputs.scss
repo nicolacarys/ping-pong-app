@@ -10,8 +10,8 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	background-color: $input-blue;
 	border: transparent;
 	border-radius: 6px;
-	color: $text-white;
 	font-size: 1em;
+	color: $text-white;
 	text-align: center;
 
 	&::placeholder {
@@ -55,27 +55,20 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	line-height: 1.2em;
 	font-size: 1em;
 	color: $text-white;
-
 }
 
 .form__text--error:after {
+	position: absolute;
 	bottom: 100%;
-	left: 54%;
-	border: solid transparent;
-	content: " ";
+	left: 50%;
 	height: 0;
 	width: 0;
-	position: absolute;
-	pointer-events: none;
+	margin-left: -10px;
+	border: solid transparent;
+	border-width: 10px;
 	border-color: rgba(204, 92, 53, 0);
 	border-bottom-color: $error;
-	border-width: 10px;
-	margin-left: -10px;
-
-}
-
-.duplicate {
-	background-color: yellow;
+	content: " ";
 }
 
 .form--tick {
@@ -93,8 +86,12 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	visibility: hidden;
 }
 
+// ********************************
+// MEDIA QUERIES
+// ********************************
+
+// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 @media (min-width: 481px) {
-	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 
 	.form__input {
 		font-size: 110%;
@@ -105,8 +102,8 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	}
 }
 
+// This size will work on iPads, other tablets, and desktops.
 @media (min-width: 768px) {
-	// This size will work on iPads, other tablets, and desktops.
 
 	.form__input {
 		font-size: 120%;
@@ -117,7 +114,7 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	}
 }
 
+// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
 @media (min-width: 1030px) {
-	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
 	
 }

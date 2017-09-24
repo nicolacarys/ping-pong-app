@@ -9,13 +9,13 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <link rel="apple-touch-icon" href="icon.png">
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="shortcut icon" href="favicon.ico" />
 
-        <!-- Place favicon.ico in the root directory -->
 	<link rel="stylesheet" type="text/css" href="css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="css/styles.css" />
 
@@ -30,9 +30,12 @@
 
 		<div class="main-content">
 
+			<!-- Scroll to top icon -->
+			<img class="body__image--scroll js__image-scroll" src="images/back-to-top.png" alt="scroll back to top button" />
+
 			<section class="section section--entry js__entry-section">
-				<h1 class="section__heading section__heading--entry"> How many players are in your tournament? </h1>
-				<h2 class="section__sub-heading section__sub-heading--entry"> Enter an even number</h2>
+				<h1 class="section__heading section__heading--entry">How many players are in your tournament?</h1>
+				<h2 class="section__sub-heading section__sub-heading--entry">Please enter an even number.</h2>
 
 				<form class="form form--entry">
 					<input class="form__input form__input--entry js__entry-numbers" type="number" name="number-of-players" placeholder="0" min="4" max="100" step="2" aria-label="number input box"/>
@@ -42,9 +45,6 @@
 			</section>
 
 			<section class="section section--details js__details-section">
-				<h1 class="section__heading section__heading--details">Player Details</h1>
-				<h2 class="section__sub-heading section__sub-heading--details">Enter the details of each player and click ‘Let’s Play!’ when completed.</h2>
-				
 				<form class="form form--details js__player-details-container">
 					<p class="form__text form__text--error js__error-text-input"></p>
 					<button class="form__button form__button--details js__button-players">Let’s play!</button>

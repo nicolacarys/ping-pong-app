@@ -10,8 +10,9 @@
 	background-color: $button-blue;
 	border: 2px solid $text-white;
 	border-radius: 6px;
-	font-size: 1em;
+	font-size: 1.1em;
 	color: $input-blue;
+	cursor: pointer;
 
 	&:focus {
 		background-color: $input-blue;
@@ -22,23 +23,27 @@
 	}
 }
 
+// ********************************
+// MEDIA QUERIES
+// ********************************
+
+// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 @media (min-width: 481px) {
-	// This stylesheet is loaded for larger devices. It's set to 481px because at 480px it would load on a landscaped iPhone.
 
 	.form__button {
 		font-size: 110%;
 	}
 }
 
+// This size will work on iPads, other tablets, and desktops.
 @media (min-width: 768px) {
-	// This size will work on iPads, other tablets, and desktops.
 
 	.form__button {
 		font-size: 120%;
 	}
 }
 
+// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
 @media (min-width: 1030px) {
-	// This is the desktop size. It's larger than an iPad so it will only be seen on the Desktop.
 	
 }
