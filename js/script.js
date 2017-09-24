@@ -9,7 +9,7 @@ $($ => {
 
 	/* Debugging mode --> set the value to TRUE for debugging console messages, or FALSE if not testing.
 	This was designed to be a development aid in identifying from where problems originated. */
-	const debugMode = true;
+	const debugMode = false;
 	const debug = (message) => debugMode ? console.log(message) : null;
 
 
