@@ -41,7 +41,7 @@ $($ => {
 			detailSectionClick();
 		});
 
-		// Adding a scroll back to top button, called in the init() function for the Player Details and Tracker sections.
+		// Adding a scroll back to top button when pages are scrolled 100px or more.
 		const showScrollToTopBtn = () => {
 			const scrollToTopBtn = container.find(".js__image-scroll");
 			
