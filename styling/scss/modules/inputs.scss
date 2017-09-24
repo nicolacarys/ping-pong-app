@@ -51,7 +51,7 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	padding: 10px;
 	margin: 10px auto;
 	box-shadow: none;
-	background: #cc5c35;
+	background: $error;
 	line-height: 1.2em;
 	font-size: 1em;
 	color: $text-white;
@@ -66,7 +66,7 @@ This is the basic stylesheet for inputs across the app. They can be over-written
 	margin-left: -10px;
 	border: solid transparent;
 	border-width: 10px;
-	border-color: rgba(204, 92, 53, 0);
+	border-color: $error;
 	border-bottom-color: $error;
 	content: " ";
 }

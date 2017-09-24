@@ -93,18 +93,7 @@ $($ => {
 		They check the value entered for even / odd, and toggle error classes for the number input and error text. */
 		// triple equals has been used here to exact precision
 		const isEven = (n) => n % 2 === 0;
-
 		const numbersOnly = /^\d+$/;
-		
-		// let addErrorClasses = (errorBlockType) => {
-		// 	// let addErrorInputClass = () => entrySection.find($("input")).addClass("has-error");
-		// 	addErrorTextClass(errorBlockType);
-		// };
-
-		// let removeErrorClasses = (errorBlockType) => {
-		// 	// let removeErrorInputClass = () => entrySection.find($("input")).removeClass("has-error");
-		// 	removeErrorTextClass(errorBlockType);
-		// };
 
 		/* Validation checks to run on the number input.
 
@@ -172,7 +161,7 @@ $($ => {
 		const subheading = $("<h2 />").addClass(`section__sub-heading section__sub-heading--${sectionNameString}`);
 		
 		sectionContainer.prepend(heading, subheading);
-	}
+	};
 
 	// Taking the validated number and using it to insert a corresponding number of inputs into the DOM.
 	const generateDetailsSectionElements = (numberInputValue) => {
